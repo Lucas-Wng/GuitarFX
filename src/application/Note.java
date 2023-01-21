@@ -1,30 +1,37 @@
 package application;
 //update
 public class Note {
-	private char name;
-	private double pitch;
+	private String name;
+	private int midiNoteNumber;
 	private int octave;
-	public Note(char name, double pitch, int octave) {
+	
+	public Note(String name, int midiNoteNumber, int octave) {
 		this.name = name;
-		this.pitch = pitch;
+		this.midiNoteNumber = midiNoteNumber;
 		this.octave = octave;
 	}
-	public char getName() {
+	
+	
+	public String getName() {
 		return name;
 	}
-	public void setName(char name) {
+	public void setName(String name) {
 		this.name = name;
 	}
-	public double getPitch() {
-		return pitch;
+	
+	public int getMidiNoteNumber() {
+		return midiNoteNumber;
 	}
-	public void setPitch(double pitch) {
-		this.pitch = pitch;
+	public void setMidiNoteNumber(int midiNoteNumber) {
+		this.midiNoteNumber = midiNoteNumber;
 	}
 	public int getOctave() {
 		return octave;
 	}
 	public void setOctave(int octave) {
 		this.octave = octave;
+	}
+	public String toString() {
+		return name;
 	}
 }

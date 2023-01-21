@@ -5,7 +5,7 @@ public class Chord extends NoteGroup{
 	private String chordType;
 	private String[] chordStructure;
 
-	public Chord(String chordRoot, String chordType, int numOfNotes, String[] notes, String[] chordStructure) {
+	public Chord(String chordRoot, String chordType, int numOfNotes, Note[] notes, String[] chordStructure) {
 		super(chordRoot+chordType, notes.length, notes);
 		this.chordRoot = chordRoot;
 		this.chordType = chordType;
@@ -34,6 +34,13 @@ public class Chord extends NoteGroup{
 
 	public void setChordStructure(String[] chordStructure) {
 		this.chordStructure = chordStructure;
+	}
+	public boolean equals(Chord c) {
+		Note[] chord1 = c.getNotes();
+		return true;
+	}
+	public String toString() {
+		return chordRoot+chordType;
 	}
 	
 }

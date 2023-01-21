@@ -14,7 +14,6 @@ public class ChordLibrary {
 	static ArrayList<Chord> list = new ArrayList<Chord>();
 	public ChordLibrary() {
 		loadData();
-		System.out.println(list.get(0).getName());
 	}
 	public String findChord(String[] userChord) {
 		boolean found = false;
@@ -22,10 +21,15 @@ public class ChordLibrary {
 		String[] cleanedArray = Arrays.stream(userChord).filter(Objects::nonNull).distinct().toArray(String[]::new);
 		System.out.println(Arrays.toString(cleanedArray));
 		for(int i=0;i<list.size();i++) {
-			String[] arr = list.get(i).getNotes();
-			Arrays.sort(arr);
+			
+			Note[] arrNoteObj = list.get(i).getNotes();
+			String[] stringNote = new String[arrNoteObj.length];
+			for(int j=0;j<arrNoteObj.length;j++) {
+				stringNote[j] = arrNoteObj[j].getName();
+			}
+			Arrays.sort(stringNote);
 			Arrays.sort(cleanedArray);
-			if(Arrays.equals(arr, cleanedArray)) {
+			if(Arrays.equals(stringNote, cleanedArray)) {
 				found = true;
 				chordName += list.get(i).getName() + " ";
 			}
@@ -49,6 +53,7 @@ public class ChordLibrary {
 				String[] chordStructure = chordStructureString.split(";");
 				line = line.substring(line.lastIndexOf('"')+2);
 				String[] notes = line.split(",");
+				Note[] notesObj = new Note[notes.length];
 				for(int i=0;i<notes.length;i++) {
 					String chordNote = notes[i];
 					if(chordNote.length()>1) {
@@ -75,11 +80,17 @@ public class ChordLibrary {
 						}
 					}
 					notes[i] = chordNote;
+					//System.out.println(Arrays.toString(notes));
+					for(int j=0;j<notes.length;j++) {
+						notesObj[i] = new Note(notes[i],0,0);
+					}
 				}
-				list.add(new Chord(note,type,notes.length,notes,chordStructure));
-				//System.out.println(note+type+Arrays.toString(notes));
+				Chord newChord = new Chord(note,type,notes.length,notesObj,chordStructure);
+				//System.out.println(Arrays.toString(newChord.getNotes()));
+				list.add(newChord);
 				
 			}
+			br.close();
 		}
 		catch(FileNotFoundException e){
 			e.printStackTrace();

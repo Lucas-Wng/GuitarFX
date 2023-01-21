@@ -1,10 +1,5 @@
 package application;
 	
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -27,11 +22,12 @@ public class Main extends Application {
 			HBox fretBoardHbox = new HBox(2);
 			fretBoardHbox.getChildren().addAll(fretboard,fretboardButtons);
 			root.getChildren().addAll(navBar,fretBoardHbox,btn3);
-			Scene scene = new Scene(root,1366,768);
+			Scene scene = new Scene(root);
 			String css = this.getClass().getResource("application.css").toExternalForm();
 			scene.getStylesheets().add(css);
 			stage.setTitle("Guitar");
 			stage.setScene(scene);
+			stage.setMaximized(true);
 			stage.show();
 			
 		} catch(Exception e) {

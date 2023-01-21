@@ -3,8 +3,8 @@ package application;
 public abstract class NoteGroup {
 	private String name;
 	private int numOfNotes;
-	private String[] notes;
-	public NoteGroup(String name, int numOfNotes, String[] notes) {
+	private Note[] notes;
+	public NoteGroup(String name, int numOfNotes, Note[] notes) {
 		this.name = name;
 		this.numOfNotes = numOfNotes;
 		this.notes = notes;
@@ -21,10 +21,10 @@ public abstract class NoteGroup {
 	public void setNumOfNotes(int numOfNotes) {
 		this.numOfNotes = numOfNotes;
 	}
-	public String[] getNotes() {
+	public Note[] getNotes() {
 		return notes;
 	}
-	public void setNotes(String[] notes) {
+	public void setNotes(Note[] notes) {
 		this.notes = notes;
 	}
 }
