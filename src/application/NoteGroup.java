@@ -27,5 +27,13 @@ public abstract class NoteGroup {
 	public void setNotes(Note[] notes) {
 		this.notes = notes;
 	}
+	public String toString() {
+		String s = "";
+		s += name+" ";
+		for(Note note:notes) {
+			s += note.toString();
+		}
+		return s;
+	}
 }
 	

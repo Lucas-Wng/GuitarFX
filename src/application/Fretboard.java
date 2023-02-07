@@ -1,6 +1,9 @@
 package application;
 
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -8,35 +11,71 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 
 public class Fretboard extends Pane {
-	String[] userNotes;
-	static ToggleGroup highE;
-	static ToggleGroup A;
-	static ToggleGroup D;
-	static ToggleGroup G;
-	static ToggleGroup B;
-	static ToggleGroup lowE;
+	private String[] userNotes;
+	private static ToggleGroup highE;
+	private static ToggleGroup A;
+	private static ToggleGroup D;
+	private static ToggleGroup G;
+	private static ToggleGroup B;
+	private static ToggleGroup lowE;
+	private static ImageView wholeViewhighE;
+	private static ImageView sharphighE;
+	private static ImageView wholeViewA;
+	private static ImageView sharpA; 
+	private static ImageView wholeViewD;
+	private static ImageView sharpD; 
+	private static ImageView wholeViewG;
+	private static ImageView sharpG; 
+	private static ImageView wholeViewB;
+	private static ImageView sharpB; 
+	private static ImageView wholeViewlowE;
+	private static ImageView sharplowE; 
 	final private static String[] noteSequenceSharp = {"A","A#","B","C","C#","D","D#","E","F","F#","G","G#"};
 	final private static String[] noteSequenceFlat = {"A","Bb","B","C","Db","D","Eb","E","F","Gb","G","Ab"};
-	static MidiPlayer midiplayer;
-	
+	private static MidiPlayer midiplayer;
 	public Fretboard() {
 		String css = this.getClass().getResource("fretboard.css").toExternalForm();
 		this.getStylesheets().add(css);
-		this.setPrefHeight(600);
+		this.setPrefHeight(650);
 		this.setPrefWidth(850);
 		midiplayer = new MidiPlayer();
 		createFretboard();
 	}
+	
 	public void createFretboard() {
 		userNotes = new String[6];
 		Label possibleChords = new Label("");
 		Label possibleChordsHeading = new Label("Possible Chords");
-		possibleChords.relocate(300, 300);
+		Rectangle staffRectangle = new Rectangle(20,480,170,140);
+		staffRectangle.setId("staffRectangle");
+		this.getChildren().add(staffRectangle);
+		Image trebleclef = null;
+		Image wholeNote = null;
+		Image sharpSymbol = null;
+		try {
+			trebleclef = new Image(new FileInputStream("data/trebleclef.png"), 130, 100, false, false);
+			wholeNote = new Image(new FileInputStream("data/wholeNote.png"), 23, 17, false, false);
+			sharpSymbol = new Image(new FileInputStream("data/sharpSymbol.png"), 15, 16, false, false);
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ImageView trebleView = new ImageView(trebleclef); 
+		
+		trebleView.setX(50);
+		trebleView.setY(500);
+		this.getChildren().add(trebleView);
+		
+		possibleChords.relocate(50, 330);
 		possibleChords.setId("possibleChordsCss");
 		possibleChordsHeading.relocate(50, 250);
 		possibleChordsHeading.setId("possibleChordsCss");
@@ -176,13 +215,31 @@ public class Fretboard extends Pane {
         highE15.setLayoutX(755);
         highE15.setLayoutY(5);
         
-
+        wholeViewhighE = new ImageView(wholeNote); 
+        wholeViewhighE.setVisible(false);
+        wholeViewhighE.setX(110);
+		this.getChildren().add(wholeViewhighE);
+		
+		sharphighE = new ImageView(sharpSymbol); 
+		sharphighE.setVisible(false);
+		sharphighE.setX(95);
+		this.getChildren().add(sharphighE);
+		
         highE.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
 				ToggleButton selectedNote = (ToggleButton) highE.getSelectedToggle();
+				sharphighE.setVisible(false);
+				wholeViewhighE.setVisible(false);
 				if(selectedNote!=null) {
-					userNotes[5] = ((Note)selectedNote.getUserData()).getName();
+					String stringNote = ((Note)selectedNote.getUserData()).getName();
+					userNotes[5] = stringNote;
+					wholeViewhighE.setY(getStaffNotePos(stringNote));
+					wholeViewhighE.setVisible(true);
+					if(stringNote.length()!=1) {
+						sharphighE.setY(getStaffNotePos(stringNote));
+						sharphighE.setVisible(true);
+					}
 				}
 				else {
 					userNotes[5] = null;
@@ -190,6 +247,7 @@ public class Fretboard extends Pane {
 //				System.out.println(Arrays.toString(userNotes));
 //				System.out.println(chordlibrary.findChord(userNotes));
 				possibleChords.setText(chordlibrary.findChord(userNotes));
+				
 			}
         	
         });
@@ -280,12 +338,31 @@ public class Fretboard extends Pane {
         B15.setLayoutY(45);
         
 
+        wholeViewB = new ImageView(wholeNote); 
+        wholeViewB.setVisible(false);
+        wholeViewB.setX(110);
+		this.getChildren().add(wholeViewB);
+		
+		sharpB = new ImageView(sharpSymbol); 
+		sharpB.setVisible(false);
+		sharpB.setX(95);
+		this.getChildren().add(sharpB);
+		
         B.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
 				ToggleButton selectedNote = (ToggleButton) B.getSelectedToggle();
+				sharpB.setVisible(false);
+				wholeViewB.setVisible(false);
 				if(selectedNote!=null) {
-					userNotes[4] = ((Note)selectedNote.getUserData()).getName();
+					String stringNote = ((Note)selectedNote.getUserData()).getName();
+					userNotes[4] = stringNote;
+					wholeViewB.setY(getStaffNotePos(stringNote));
+					wholeViewB.setVisible(true);
+					if(stringNote.length()!=1) {
+						sharpB.setY(getStaffNotePos(stringNote));
+						sharpB.setVisible(true);
+					}
 				}
 				else {
 					userNotes[4] = null;
@@ -293,6 +370,7 @@ public class Fretboard extends Pane {
 //				System.out.println(Arrays.toString(userNotes));
 //				System.out.println(chordlibrary.findChord(userNotes));
 				possibleChords.setText(chordlibrary.findChord(userNotes));
+				
 			}
         	
         });
@@ -383,12 +461,31 @@ public class Fretboard extends Pane {
         G15.setLayoutY(85);
         
 
+        wholeViewG = new ImageView(wholeNote); 
+        wholeViewG.setVisible(false);
+        wholeViewG.setX(110);
+		this.getChildren().add(wholeViewG);
+		
+		sharpG = new ImageView(sharpSymbol); 
+		sharpG.setVisible(false);
+		sharpG.setX(95);
+		this.getChildren().add(sharpG);
+		
         G.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
 				ToggleButton selectedNote = (ToggleButton) G.getSelectedToggle();
+				sharpG.setVisible(false);
+				wholeViewG.setVisible(false);
 				if(selectedNote!=null) {
-					userNotes[3] = ((Note)selectedNote.getUserData()).getName();
+					String stringNote = ((Note)selectedNote.getUserData()).getName();
+					userNotes[3] = stringNote;
+					wholeViewG.setY(getStaffNotePos(stringNote));
+					wholeViewG.setVisible(true);
+					if(stringNote.length()!=1) {
+						sharpG.setY(getStaffNotePos(stringNote));
+						sharpG.setVisible(true);
+					}
 				}
 				else {
 					userNotes[3] = null;
@@ -396,6 +493,7 @@ public class Fretboard extends Pane {
 //				System.out.println(Arrays.toString(userNotes));
 //				System.out.println(chordlibrary.findChord(userNotes));
 				possibleChords.setText(chordlibrary.findChord(userNotes));
+				
 			}
         	
         });
@@ -486,12 +584,31 @@ public class Fretboard extends Pane {
         D15.setLayoutY(125);
         
 
+        wholeViewD = new ImageView(wholeNote); 
+        wholeViewD.setVisible(false);
+        wholeViewD.setX(110);
+		this.getChildren().add(wholeViewD);
+		
+		sharpD = new ImageView(sharpSymbol); 
+		sharpD.setVisible(false);
+		sharpD.setX(95);
+		this.getChildren().add(sharpD);
+		
         D.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
 				ToggleButton selectedNote = (ToggleButton) D.getSelectedToggle();
+				sharpD.setVisible(false);
+				wholeViewD.setVisible(false);
 				if(selectedNote!=null) {
-					userNotes[2] = ((Note)selectedNote.getUserData()).getName();
+					String stringNote = ((Note)selectedNote.getUserData()).getName();
+					userNotes[2] = stringNote;
+					wholeViewD.setY(getStaffNotePos(stringNote));
+					wholeViewD.setVisible(true);
+					if(stringNote.length()!=1) {
+						sharpD.setY(getStaffNotePos(stringNote));
+						sharpD.setVisible(true);
+					}
 				}
 				else {
 					userNotes[2] = null;
@@ -499,6 +616,7 @@ public class Fretboard extends Pane {
 //				System.out.println(Arrays.toString(userNotes));
 //				System.out.println(chordlibrary.findChord(userNotes));
 				possibleChords.setText(chordlibrary.findChord(userNotes));
+				
 			}
         	
         });
@@ -589,12 +707,31 @@ public class Fretboard extends Pane {
         A15.setLayoutY(165);
         
 
+        wholeViewA = new ImageView(wholeNote); 
+        wholeViewA.setVisible(false);
+        wholeViewA.setX(110);
+		this.getChildren().add(wholeViewA);
+		
+		sharpA = new ImageView(sharpSymbol); 
+		sharpA.setVisible(false);
+		sharpA.setX(95);
+		this.getChildren().add(sharpA);
+		
         A.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
 				ToggleButton selectedNote = (ToggleButton) A.getSelectedToggle();
+				sharpA.setVisible(false);
+				wholeViewA.setVisible(false);
 				if(selectedNote!=null) {
-					userNotes[1] = ((Note)selectedNote.getUserData()).getName();
+					String stringNote = ((Note)selectedNote.getUserData()).getName();
+					userNotes[1] = stringNote;
+					wholeViewA.setY(getStaffNotePos(stringNote));
+					wholeViewA.setVisible(true);
+					if(stringNote.length()!=1) {
+						sharpA.setY(getStaffNotePos(stringNote));
+						sharpA.setVisible(true);
+					}
 				}
 				else {
 					userNotes[1] = null;
@@ -602,6 +739,7 @@ public class Fretboard extends Pane {
 //				System.out.println(Arrays.toString(userNotes));
 //				System.out.println(chordlibrary.findChord(userNotes));
 				possibleChords.setText(chordlibrary.findChord(userNotes));
+				
 			}
         	
         });
@@ -692,12 +830,31 @@ public class Fretboard extends Pane {
         lowE15.setLayoutY(205);
         
 
+        wholeViewlowE = new ImageView(wholeNote); 
+        wholeViewlowE.setVisible(false);
+        wholeViewlowE.setX(110);
+		this.getChildren().add(wholeViewlowE);
+		
+		sharplowE = new ImageView(sharpSymbol); 
+		sharplowE.setVisible(false);
+		sharplowE.setX(95);
+		this.getChildren().add(sharplowE);
+		
         lowE.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
 				ToggleButton selectedNote = (ToggleButton) lowE.getSelectedToggle();
+				sharplowE.setVisible(false);
+				wholeViewlowE.setVisible(false);
 				if(selectedNote!=null) {
-					userNotes[0] = ((Note)selectedNote.getUserData()).getName();
+					String stringNote = ((Note)selectedNote.getUserData()).getName();
+					userNotes[0] = stringNote;
+					wholeViewlowE.setY(getStaffNotePos(stringNote));
+					wholeViewlowE.setVisible(true);
+					if(stringNote.length()!=1) {
+						sharplowE.setY(getStaffNotePos(stringNote));
+						sharplowE.setVisible(true);
+					}
 				}
 				else {
 					userNotes[0] = null;
@@ -705,6 +862,7 @@ public class Fretboard extends Pane {
 //				System.out.println(Arrays.toString(userNotes));
 //				System.out.println(chordlibrary.findChord(userNotes));
 				possibleChords.setText(chordlibrary.findChord(userNotes));
+				
 			}
         	
         });
@@ -772,7 +930,7 @@ public class Fretboard extends Pane {
 		}
 		return name;
 	}
-	public static void playFretboardNotes() {
+	public static void playArpeggioFretboardNotes() {
 		if(lowE.getSelectedToggle()!=null) {
 			midiplayer.playNote(((Note)(lowE.getSelectedToggle().getUserData())).getMidiNoteNumber());
 			try { Thread.sleep(600); // wait time in milliseconds to control duration
@@ -821,6 +979,31 @@ public class Fretboard extends Pane {
         }
 		midiplayer.stopSound();
 	}
+	public static void playChordFretboardNotes() {
+		if(lowE.getSelectedToggle()!=null) {
+			midiplayer.playNote(((Note)(lowE.getSelectedToggle().getUserData())).getMidiNoteNumber());
+		}
+		if(A.getSelectedToggle()!=null) {
+			midiplayer.playNote(((Note)(A.getSelectedToggle().getUserData())).getMidiNoteNumber());
+		}
+		if(D.getSelectedToggle()!=null) {
+			midiplayer.playNote(((Note)(D.getSelectedToggle().getUserData())).getMidiNoteNumber());
+		}
+		if(G.getSelectedToggle()!=null) {
+			midiplayer.playNote(((Note)(G.getSelectedToggle().getUserData())).getMidiNoteNumber());
+		}
+		if(B.getSelectedToggle()!=null) {
+			midiplayer.playNote(((Note)(B.getSelectedToggle().getUserData())).getMidiNoteNumber());
+		}
+		if(highE.getSelectedToggle()!=null) {
+			midiplayer.playNote(((Note)(highE.getSelectedToggle().getUserData())).getMidiNoteNumber());
+		}
+		try { Thread.sleep(3000); // wait time in milliseconds to control duration
+        } catch( InterruptedException e ) {
+            e.printStackTrace();
+        }
+		midiplayer.stopSound();
+	}
 	public static void clearSelection() {
 		highE.selectToggle(null);
 		A.selectToggle(null);
@@ -828,9 +1011,60 @@ public class Fretboard extends Pane {
 		G.selectToggle(null);
 		D.selectToggle(null);
 		lowE.selectToggle(null);
+		wholeViewhighE.setVisible(false);
+		sharphighE.setVisible(false);
+		wholeViewA.setVisible(false);
+		sharpA.setVisible(false);
+		wholeViewD.setVisible(false);
+		sharpD.setVisible(false);
+		wholeViewG.setVisible(false);
+		sharpG.setVisible(false);
+		wholeViewB.setVisible(false);
+		sharpB.setVisible(false);
+		wholeViewlowE.setVisible(false);
+		sharplowE.setVisible(false);
 	}
 	public static void moveSelectionUp() {
 		
+	}
+	public static double getStaffNotePos(String note) {
+		if(note.equals("A")) {
+			return 545;
+		}
+		if(note.equals("A#")) {
+			return 545;
+		}
+		if(note.equals("B")) {
+			return 536;
+		}
+		if(note.equals("C")) {
+			return 527;
+		}
+		if(note.equals("C#")) {
+			return 527;
+		}
+		if(note.equals("D")) {
+			return 519;
+		}
+		if(note.equals("D#")) {
+			return 519;
+		}
+		if(note.equals("E")) {
+			return 511;
+		}
+		if(note.equals("F")) {
+			return 561;
+		}
+		if(note.equals("F#")) {
+			return 561;
+		}
+		if(note.equals("G")) {
+			return 552;
+		}
+		if(note.equals("G#")) {
+			return 552;
+		}
+		return 0;
 	}
 	
 }

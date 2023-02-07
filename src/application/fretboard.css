@@ -57,12 +57,51 @@
 	-fx-border-radius: 5px;
 }
 
+.radio-button {
+	-fx-pref-width: 40px;
+  -fx-background-color: transparent;
+  -fx-background-radius: 5px;
+  -fx-font-size: 12;
+  -fx-padding: 10px;
+  -fx-text-fill: transparent;
+}
+
+.radio-button:selected {
+  -fx-background-color: green;
+  -fx-text-fill: white;
+}
+
+.radio-button .dot {
+    -fx-pref-width: 0px;
+    -fx-pref-height: 0px;
+    -fx-padding: 0px;
+    -fx-background-color: transparent;
+
+}
+
+.radio-button .radio {
+    -fx-pref-width: 0px;
+    -fx-pref-height: 0px;
+    -fx-padding: 0px;
+    -fx-background-color: transparent;
+
+}
+
+
+
 #noteCircle{
 	-fx-fill: #ADD8E6;
 }
 #noteLabel{
 	
 }
+
+#staffRectangle{
+	-fx-fill: #FFFFFF;
+	-fx-arc-height: 20px;
+	-fx-arc-width: 20px;
+}
+
 Fretboard{
 	-fx-background-color: #252422;
 }

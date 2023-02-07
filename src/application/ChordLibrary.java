@@ -39,6 +39,17 @@ public class ChordLibrary {
 		}
 		return chordName;
 	}
+	public static void insertionSort(String[] arr) {
+		for(int i=1;i<arr.length;++i) {
+			String key = arr[i];
+			int j = i - 1;
+			while(j>=0&&key.compareTo(arr[j])<0) {
+				arr[j+1] = arr[j];
+				j = j - 1;
+			}
+			arr[j+1] = key;
+		}
+	}
 	public static void loadData() {
 		String line = "";
 		String[] noteSequence = {"A","A#","B","C","C#","D","D#","E","F","F#","G","G#"};

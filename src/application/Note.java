@@ -31,6 +31,12 @@ public class Note {
 	public void setOctave(int octave) {
 		this.octave = octave;
 	}
+	public boolean equals(Note note) {
+		if(name.equals(note.getName())) {
+			return true;
+		}
+		return false;
+	}
 	public String toString() {
 		return name;
 	}
