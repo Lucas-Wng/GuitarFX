@@ -9,9 +9,9 @@ public class ScalePane extends VBox{
 		NavigationBar navBar = new NavigationBar();
 		ScaleSearch search = new ScaleSearch();
 		ScaleFretboard fretboard = new ScaleFretboard();
-		
+		ScaleButtons buttons = new ScaleButtons();
 		HBox fretBoardHbox = new HBox(2);
 		fretBoardHbox.getChildren().addAll(fretboard,search);
-		this.getChildren().addAll(navBar,fretBoardHbox);
+		this.getChildren().addAll(navBar,fretBoardHbox,buttons);
 	}
 }

@@ -23,14 +23,22 @@ public class ScaleFretboard extends Pane{
 	private static ToggleGroup G;
 	private static ToggleGroup B;
 	private static ToggleGroup lowE;
-	private static Map<String, Scale> scaleMap;
+	private static Map<String, int[]> scaleMap;
 	private static ArrayList<RadioButton> buttonList;
+	final private static String[] noteSequence = { "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G",
+	"G#" };
+	private static String currentNote;
+	private static String currentScale;
+	
+
 	public ScaleFretboard() {
 		buttonList = new ArrayList<RadioButton>();
 		scaleMap = ScaleLibrary.getScaleMap();
+		currentNote = null;
+		currentScale = null;
 		String css = this.getClass().getResource("fretboard.css").toExternalForm();
 		this.getStylesheets().add(css);
-		this.setPrefHeight(650);
+		this.setPrefHeight(300);
 		this.setPrefWidth(850);
 		createFretboard();
 	}
@@ -605,8 +613,10 @@ public class ScaleFretboard extends Pane{
 		buttonList.add(lowE13);
 		buttonList.add(lowE14);
 		buttonList.add(lowE15);
+		for(RadioButton noteButton:buttonList) {
+			noteButton.setDisable(true);
+		}
 		
-
 		this.getChildren().addAll(circle3, circle5, circle7, circle9, circle12A, circle12B, circle15, highE0, highE1,
 				highE2, highE3, highE4, highE5, highE6, highE7, highE8, highE9, highE10, highE11, highE12, highE13,
 				highE14, highE15, B0, B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11, B12, B13, B14, B15, G0, G1, G2, G3,
@@ -617,18 +627,56 @@ public class ScaleFretboard extends Pane{
 
 	}
 
-	public static void updateNotes(String name) {
+	public static void updateNotes() { // change
 		for(int i=0;i<buttonList.size();i++) {
 			buttonList.get(i).setSelected(false);
 		}
-		Note[] scaleNotes = scaleMap.get(name).getNotes();
-		for(int i=0;i<buttonList.size();i++) {
-			Note buttonNote = (Note) buttonList.get(i).getUserData();
-			for(Note note:scaleNotes) {
-				if(note.equals(buttonNote)) {
-					buttonList.get(i).fire();
+		ScaleButtons.setCurrentNoteScaleText(currentNote+currentScale);
+		if(currentScale!=null&&currentNote!=null) {
+			int[] intervals = scaleMap.get(currentScale);
+			if(intervals!=null) {
+				Note[] scaleNotes = generateScales(currentNote,intervals);
+				for(int i=0;i<buttonList.size();i++) {
+					Note buttonNote = (Note) buttonList.get(i).getUserData();
+					for(Note note:scaleNotes) {
+						if(note.equals(buttonNote)) {
+							buttonList.get(i).setDisable(false);
+							buttonList.get(i).fire();
+						}
+					}
 				}
 			}
 		}
+		
+	}
+	public static Note[] generateScales(String note, int[] intervals) {
+		Note[] notes = new Note[intervals.length];
+		int rootPos = -1;
+		for(int i=0;i<noteSequence.length;i++) {
+			if(noteSequence[i].equals(note)) {
+				rootPos = i;
+				break;
+			}
+		}
+		for(int i=0;i<intervals.length;i++) {
+			notes[i] = new Note(noteSequence[(rootPos + intervals[i])%12],0,0);
+		}
+		
+		return notes;
+	}
+	public static String getCurrentNote() {
+		return currentNote;
+	}
+
+	public static void setCurrentNote(String currentNote) {
+		ScaleFretboard.currentNote = currentNote;
+	}
+
+	public static String getCurrentScale() {
+		return currentScale;
+	}
+
+	public static void setCurrentScale(String currentScale) {
+		ScaleFretboard.currentScale = currentScale;
 	}
 }

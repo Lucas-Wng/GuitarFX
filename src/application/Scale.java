@@ -8,5 +8,13 @@ public class Scale extends NoteGroup{
 		super(scaleNote+scaleType, numOfNotes, notes);
 		this.intervals = intervals;
 	}
+
+	public int[] getIntervals() {
+		return intervals;
+	}
+
+	public void setIntervals(int[] intervals) {
+		this.intervals = intervals;
+	}
 	
 }

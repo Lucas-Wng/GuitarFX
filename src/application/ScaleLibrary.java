@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class ScaleLibrary {
 	final private static String[] noteSequence = {"A","A#","B","C","C#","D","D#","E","F","F#","G","G#"};
-	private static Map<String, Scale> scaleMap; 
+	private static Map<String, int[]> scaleMap; 
 	public ScaleLibrary() {
-		scaleMap = new HashMap<String, Scale>();
+		scaleMap = new HashMap<String, int[]>();
 		loadData();
 	}
 	
@@ -28,10 +28,11 @@ public class ScaleLibrary {
 				String name = line.substring(1,line.indexOf('"',1));
 				String intervalString = line.substring(line.lastIndexOf('"')+2, line.lastIndexOf(',')); 
 				int[] intervals = Arrays.stream(intervalString.split(",")).mapToInt(Integer::parseInt).toArray();
-				for(String note:noteSequence) {
-					//System.out.println(Arrays.toString(generateScales(note, intervals)));
-					scaleMap.put(note+" "+name, new Scale(note,name,intervals.length,generateScales(note, intervals),intervals));
-				}
+				scaleMap.put(name, intervals);
+//				for(String note:noteSequence) {
+//					//System.out.println(Arrays.toString(generateScales(note, intervals)));
+//					scaleMap.put(note+" "+name, new Scale(note,name,intervals.length,generateScales(note, intervals),intervals));
+//				}
 				
 			}
 			br.close();
@@ -43,22 +44,8 @@ public class ScaleLibrary {
 			e.printStackTrace();
 		}
 	}
-	public static Note[] generateScales(String note, int[] intervals) {
-		Note[] notes = new Note[intervals.length];
-		int rootPos = -1;
-		for(int i=0;i<noteSequence.length;i++) {
-			if(noteSequence[i].equals(note)) {
-				rootPos = i;
-				break;
-			}
-		}
-		for(int i=0;i<intervals.length;i++) {
-			notes[i] = new Note(noteSequence[(rootPos + intervals[i])%12],0,0);
-		}
-		
-		return notes;
-	}
-	public static Map<String, Scale> getScaleMap() {
+	
+	public static Map<String, int[]> getScaleMap() {
 		return scaleMap;
 	}
 }

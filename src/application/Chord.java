@@ -4,12 +4,13 @@ public class Chord extends NoteGroup{
 	private String chordRoot;
 	private String chordType;
 	private String[] chordStructure;
-
-	public Chord(String chordRoot, String chordType, int numOfNotes, Note[] notes, String[] chordStructure) {
+	private int[] fingerPos;
+	public Chord(String chordRoot, String chordType, int numOfNotes, Note[] notes, String[] chordStructure,int[] fingerPos) {
 		super(chordRoot+chordType, notes.length, notes);
 		this.chordRoot = chordRoot;
 		this.chordType = chordType;
 		this.chordStructure = chordStructure;
+		this.setFingerPos(fingerPos);
 	}
 
 	public String getChordRoot() {
@@ -35,12 +36,17 @@ public class Chord extends NoteGroup{
 	public void setChordStructure(String[] chordStructure) {
 		this.chordStructure = chordStructure;
 	}
-	public boolean equals(Chord c) {
-		Note[] chord1 = c.getNotes();
-		return true;
-	}
+	
 	public String toString() {
 		return chordRoot+chordType;
+	}
+
+	public int[] getFingerPos() {
+		return fingerPos;
+	}
+
+	public void setFingerPos(int[] fingerPos) {
+		this.fingerPos = fingerPos;
 	}
 	
 }

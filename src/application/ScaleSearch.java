@@ -27,20 +27,27 @@ public class ScaleSearch extends Pane{
 	private ListView<String> listView;
 	private ScaleLibrary scaleLibrary;
 	private List<String> scaleNames;
+	private MidiPlayer midiplayer;
+	private Button playScaleButton;
+	final private static String[] noteSequence = { "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G",
+	"G#" };
+	final private static int[] midiNoteSequence = {57,59,59,60,61,62,63,64,65,66,67,68};
+	
 
 	public ScaleSearch() {
+		midiplayer = new MidiPlayer();
 		HBox searchHBox = new HBox(2);
-		VBox searchVBox = new VBox(2);
+		VBox searchVBox = new VBox(3);
 		scaleLibrary = new ScaleLibrary();
 
 		// System.out.println(Arrays.deepToString(scaleNames.toArray()));
-		scaleNames = new ArrayList<>(scaleLibrary.getScaleMap().keySet());
+		scaleNames = new ArrayList<String>(ScaleLibrary.getScaleMap().keySet());
 		ObservableList<String> scaleObservableList = FXCollections.observableArrayList(scaleNames);
 		listView = new ListView<String>(scaleObservableList);
 		listView.setMaxSize(200, 160);
 		searchBar = new TextField();
 		searchButton = new Button("Search");
-		
+		playScaleButton = new Button("Play");
 		searchButton.setOnAction(new EventHandler<ActionEvent>() {
 			 
 		    @Override
@@ -50,18 +57,61 @@ public class ScaleSearch extends Pane{
 
 		});
 		
+		
+		
 		listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 		        //System.out.println(newValue);
 		    	if(newValue!=null) {
-		    		ScaleFretboard.updateNotes(newValue);
+		    		ScaleFretboard.setCurrentScale(newValue);
+		    		ScaleFretboard.updateNotes();
 		    	}
 		    }
 		});
 		
+		playScaleButton.setOnAction(new EventHandler<ActionEvent>() {
+			 
+		    @Override
+		    public void handle(ActionEvent event) {
+		    	if(ScaleFretboard.getCurrentScale()!=null) {
+		    		//System.out.println(scaleLibrary.getScaleMap().keySet());
+		    		int[] intervals = ScaleLibrary.getScaleMap().get(ScaleFretboard.getCurrentScale());
+		    		System.out.println(Arrays.toString(intervals));
+		    		String currentNote = ScaleFretboard.getCurrentNote();
+		    		int midinote = -1;
+		    		for(int i=0;i<noteSequence.length;i++) {
+		    			if(noteSequence[i].equals(currentNote)) {
+		    				midinote = i;
+		    				break;
+		    			}
+		    		}
+		    		
+		    		for(int i=0;i<intervals.length;i++) {
+		    			midiplayer.playNote(midiNoteSequence[midinote]+intervals[i]);
+		    			try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		    			midiplayer.stopSound();
+		    		}
+		    		midiplayer.playNote(midiNoteSequence[midinote]+12);
+		    		try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		    		midiplayer.stopSound();
+		    	}
+		    }
+
+		});
+		
 		searchHBox.getChildren().addAll(searchBar, searchButton);
-		searchVBox.getChildren().addAll(searchHBox, listView);
+		searchVBox.getChildren().addAll(searchHBox, listView,playScaleButton);
 		this.getChildren().addAll(searchVBox);
 	}
 
@@ -78,6 +128,14 @@ public class ScaleSearch extends Pane{
 		return listOfStrings.stream().filter(input -> {
 			return searchWordsArray.stream().allMatch(word -> input.toLowerCase().contains(word.toLowerCase()));
 		}).collect(Collectors.toList());
+	}
+	public List<String> quickSort(){
+		return null;
+		
+	}
+	public String binarySearch() {
+		return null;
+		
 	}
 	
 }
