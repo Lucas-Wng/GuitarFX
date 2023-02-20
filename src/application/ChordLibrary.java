@@ -19,7 +19,7 @@ public class ChordLibrary {
 		boolean found = false;
 		String chordName = "";
 		String[] cleanedArray = Arrays.stream(userChord).filter(Objects::nonNull).distinct().toArray(String[]::new);
-		System.out.println(Arrays.toString(cleanedArray));
+		
 		for(int i=0;i<list.size();i++) {
 			
 			Note[] arrNoteObj = list.get(i).getNotes();

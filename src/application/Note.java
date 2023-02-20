@@ -4,14 +4,27 @@ public class Note {
 	private String name;
 	private int midiNoteNumber;
 	private int octave;
-	
+	private int fretnum;
 	public Note(String name, int midiNoteNumber, int octave) {
 		this.name = name;
 		this.midiNoteNumber = midiNoteNumber;
 		this.octave = octave;
+		fretnum = 0;
+	}
+	public Note(String name, int midiNoteNumber, int octave, int fretnum) {
+		this.name = name;
+		this.midiNoteNumber = midiNoteNumber;
+		this.octave = octave;
+		this.fretnum = fretnum;
 	}
 	
 	
+	public int getFretnum() {
+		return fretnum;
+	}
+	public void setFretnum(int fretnum) {
+		this.fretnum = fretnum;
+	}
 	public String getName() {
 		return name;
 	}

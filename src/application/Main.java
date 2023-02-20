@@ -22,7 +22,7 @@ public class Main extends Application {
 			
 			AnalyzerPane analyzerpane = new AnalyzerPane();
 			ScalePane scalepane = new ScalePane();
-			
+			ChordFingeringPane chordpane = new ChordFingeringPane();
 			
 			
 			
@@ -32,6 +32,7 @@ public class Main extends Application {
 			SceneController sceneController = new SceneController(scene);
 			sceneController.addScreen("analyzer", analyzerpane);
 			sceneController.addScreen("scales", scalepane);
+			sceneController.addScreen("chord library", chordpane);
 			SceneController.activate("analyzer");
 			
 			

@@ -14,7 +14,7 @@ public class NavigationBar extends HBox {
 	public NavigationBar() {
 		Button btn1 = new Button("Chord Analyzer");
 		Button btn2 = new Button("Scale Library");
-		Button btn3 = new Button("Button 3");
+		Button btn3 = new Button("Chord Library");
 
 		btn1.setOnAction(new EventHandler<ActionEvent>() {
 			 
@@ -34,6 +34,14 @@ public class NavigationBar extends HBox {
 
 		});
 		
+		btn3.setOnAction(new EventHandler<ActionEvent>() {
+			 
+		    @Override
+		    public void handle(ActionEvent event) {
+		    	SceneController.activate("chord library");
+		    }
+
+		});
 		this.getChildren().addAll(btn1, btn2, btn3);
 	}
 

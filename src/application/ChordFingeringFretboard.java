@@ -2,40 +2,36 @@ package application;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
-public class ScaleFretboard extends Pane{
-	private static Map<String, int[]> scaleMap;
-	private static ArrayList<RadioButton> buttonList;
-	final private static String[] noteSequence = { "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G",
-	"G#" };
-	private static String currentNote;
-	private static String currentScale;
-	public ScaleFretboard() {
-		buttonList = new ArrayList<RadioButton>();
-		scaleMap = ScaleLibrary.getScaleMap();
-		currentNote = null;
-		currentScale = null;
+public class ChordFingeringFretboard extends Pane{
+	private static RadioButton[] highE;
+	private static RadioButton[] B;
+	private static RadioButton[] G;
+	private static RadioButton[] D;
+	private static RadioButton[] A;
+	private static RadioButton[] lowE;
+	private static ArrayList<Chord> chordsList;
+	private static String currChordName;
+	private static ArrayList<int[]> possibleFingering;
+	private static int currentPos;
+	public ChordFingeringFretboard() {
 		String css = this.getClass().getResource("fretboard.css").toExternalForm();
 		this.getStylesheets().add(css);
-		this.setPrefHeight(300);
-		this.setPrefWidth(850);
+		currChordName = null;
+		setCurrChordName("Cmaj");
+		chordsList = ChordLibrary.list;
 		createFretboard();
+		updateNotes();
 	}
-	
 	public void createFretboard() {
+		possibleFingering = new ArrayList<int[]>();
+		currentPos=0;
 		for (int i = 0; i < 6; i++) {
 			Line line1 = new Line(50, 20 + (i * 40), 800.0, 20 + (i * 40));
 			line1.setId("stringline" + (i + 1));
@@ -100,22 +96,22 @@ public class ScaleFretboard extends Pane{
 
 		
 
-		highE0.setUserData(new Note("E", 64, 3));
-		highE1.setUserData(new Note("F", 65, 3));
-		highE2.setUserData(new Note("F#", 66, 3));
-		highE3.setUserData(new Note("G", 67, 3));
-		highE4.setUserData(new Note("G#", 68, 3));
-		highE5.setUserData(new Note("A", 69, 3));
-		highE6.setUserData(new Note("A#", 70, 3));
-		highE7.setUserData(new Note("B", 71, 3));
-		highE8.setUserData(new Note("C", 72, 4));
-		highE9.setUserData(new Note("C#", 73, 4));
-		highE10.setUserData(new Note("D", 74, 4));
-		highE11.setUserData(new Note("D#", 75, 4));
-		highE12.setUserData(new Note("E", 76, 4));
-		highE13.setUserData(new Note("F", 77, 4));
-		highE14.setUserData(new Note("F#", 78, 4));
-		highE15.setUserData(new Note("G", 79, 4));
+		highE0.setUserData(new Note("E", 64, 3, 0));
+		highE1.setUserData(new Note("F", 65, 3, 1));
+		highE2.setUserData(new Note("F#", 66, 3, 2));
+		highE3.setUserData(new Note("G", 67, 3, 3));
+		highE4.setUserData(new Note("G#", 68, 3, 4));
+		highE5.setUserData(new Note("A", 69, 3, 5));
+		highE6.setUserData(new Note("A#", 70, 3, 6));
+		highE7.setUserData(new Note("B", 71, 3, 7));
+		highE8.setUserData(new Note("C", 72, 4, 8));
+		highE9.setUserData(new Note("C#", 73, 4, 9));
+		highE10.setUserData(new Note("D", 74, 4, 10));
+		highE11.setUserData(new Note("D#", 75, 4, 11));
+		highE12.setUserData(new Note("E", 76, 4, 12));
+		highE13.setUserData(new Note("F", 77, 4, 13));
+		highE14.setUserData(new Note("F#", 78, 4, 14));
+		highE15.setUserData(new Note("G", 79, 4, 15));
 
 //        System.out.println();
 //        ((Note)highE2.getUserData()).setName(((Note)highE2.getUserData()).switchAccidental());
@@ -155,6 +151,7 @@ public class ScaleFretboard extends Pane{
 		highE15.setLayoutY(5);
 
 
+
 		RadioButton B0 = new RadioButton("B");
 		RadioButton B1 = new RadioButton("C");
 		RadioButton B2 = new RadioButton("C#");
@@ -173,22 +170,22 @@ public class ScaleFretboard extends Pane{
 		RadioButton B15 = new RadioButton("D");
 
 
-		B0.setUserData(new Note("B", 59, 2));
-		B1.setUserData(new Note("C", 60, 3));
-		B2.setUserData(new Note("C#", 61, 3));
-		B3.setUserData(new Note("D", 62, 3));
-		B4.setUserData(new Note("D#", 63, 3));
-		B5.setUserData(new Note("E", 64, 3));
-		B6.setUserData(new Note("F", 65, 3));
-		B7.setUserData(new Note("F#", 66, 3));
-		B8.setUserData(new Note("G", 67, 3));
-		B9.setUserData(new Note("G#", 68, 3));
-		B10.setUserData(new Note("A", 69, 3));
-		B11.setUserData(new Note("A#", 70, 3));
-		B12.setUserData(new Note("B", 71, 3));
-		B13.setUserData(new Note("C", 72, 4));
-		B14.setUserData(new Note("C#", 73, 4));
-		B15.setUserData(new Note("D", 74, 4));
+		B0.setUserData(new Note("B", 59, 2, 0));
+		B1.setUserData(new Note("C", 60, 3, 1));
+		B2.setUserData(new Note("C#", 61, 3, 2));
+		B3.setUserData(new Note("D", 62, 3, 3));
+		B4.setUserData(new Note("D#", 63, 3, 4));
+		B5.setUserData(new Note("E", 64, 3, 5));
+		B6.setUserData(new Note("F", 65, 3, 6));
+		B7.setUserData(new Note("F#", 66, 3, 7));
+		B8.setUserData(new Note("G", 67, 3, 8));
+		B9.setUserData(new Note("G#", 68, 3, 9));
+		B10.setUserData(new Note("A", 69, 3, 10));
+		B11.setUserData(new Note("A#", 70, 3, 11));
+		B12.setUserData(new Note("B", 71, 3, 12));
+		B13.setUserData(new Note("C", 72, 4, 13));
+		B14.setUserData(new Note("C#", 73, 4, 14));
+		B15.setUserData(new Note("D", 74, 4, 15));
 
 		B0.setLayoutX(5);
 		B0.setLayoutY(45);
@@ -224,7 +221,7 @@ public class ScaleFretboard extends Pane{
 		B15.setLayoutY(45);
 
 	
-	
+
 		RadioButton G0 = new RadioButton("G");
 		RadioButton G1 = new RadioButton("G#");
 		RadioButton G2 = new RadioButton("A");
@@ -244,22 +241,22 @@ public class ScaleFretboard extends Pane{
 
 
 
-		G0.setUserData(new Note("G", 55, 2));
-		G1.setUserData(new Note("G#", 56, 2));
-		G2.setUserData(new Note("A", 57, 2));
-		G3.setUserData(new Note("A#", 58, 2));
-		G4.setUserData(new Note("B", 59, 2));
-		G5.setUserData(new Note("C", 60, 3));
-		G6.setUserData(new Note("C#", 61, 3));
-		G7.setUserData(new Note("D", 62, 3));
-		G8.setUserData(new Note("D#", 63, 3));
-		G9.setUserData(new Note("E", 64, 3));
-		G10.setUserData(new Note("F", 65, 3));
-		G11.setUserData(new Note("F#", 66, 3));
-		G12.setUserData(new Note("G", 67, 3));
-		G13.setUserData(new Note("G#", 68, 3));
-		G14.setUserData(new Note("A", 69, 3));
-		G15.setUserData(new Note("A#", 70, 3));
+		G0.setUserData(new Note("G", 55, 2, 0));
+		G1.setUserData(new Note("G#", 56, 2, 1));
+		G2.setUserData(new Note("A", 57, 2, 2));
+		G3.setUserData(new Note("A#", 58, 2, 3));
+		G4.setUserData(new Note("B", 59, 2, 4));
+		G5.setUserData(new Note("C", 60, 3, 5));
+		G6.setUserData(new Note("C#", 61, 3, 6));
+		G7.setUserData(new Note("D", 62, 3, 7));
+		G8.setUserData(new Note("D#", 63, 3, 8));
+		G9.setUserData(new Note("E", 64, 3, 9));
+		G10.setUserData(new Note("F", 65, 3, 10));
+		G11.setUserData(new Note("F#", 66, 3, 11));
+		G12.setUserData(new Note("G", 67, 3, 12));
+		G13.setUserData(new Note("G#", 68, 3, 13));
+		G14.setUserData(new Note("A", 69, 3, 14));
+		G15.setUserData(new Note("A#", 70, 3, 15));
 
 		G0.setLayoutX(5);
 		G0.setLayoutY(85);
@@ -296,7 +293,7 @@ public class ScaleFretboard extends Pane{
 
 		
 
-	
+
 		RadioButton D0 = new RadioButton("D");
 		RadioButton D1 = new RadioButton("D#");
 		RadioButton D2 = new RadioButton("E");
@@ -316,22 +313,22 @@ public class ScaleFretboard extends Pane{
 
 
 
-		D0.setUserData(new Note("D", 50, 2));
-		D1.setUserData(new Note("D#", 51, 2));
-		D2.setUserData(new Note("E", 52, 2));
-		D3.setUserData(new Note("F", 53, 2));
-		D4.setUserData(new Note("F#", 54, 2));
-		D5.setUserData(new Note("G", 55, 2));
-		D6.setUserData(new Note("G#", 56, 2));
-		D7.setUserData(new Note("A", 57, 2));
-		D8.setUserData(new Note("A#", 58, 2));
-		D9.setUserData(new Note("B", 59, 2));
-		D10.setUserData(new Note("C", 60, 3));
-		D11.setUserData(new Note("C#", 61, 3));
-		D12.setUserData(new Note("D", 62, 3));
-		D13.setUserData(new Note("D#", 63, 3));
-		D14.setUserData(new Note("E", 64, 3));
-		D15.setUserData(new Note("F", 65, 3));
+		D0.setUserData(new Note("D", 50, 2, 0));
+		D1.setUserData(new Note("D#", 51, 2, 1));
+		D2.setUserData(new Note("E", 52, 2, 2));
+		D3.setUserData(new Note("F", 53, 2, 3));
+		D4.setUserData(new Note("F#", 54, 2, 4));
+		D5.setUserData(new Note("G", 55, 2, 5));
+		D6.setUserData(new Note("G#", 56, 2, 6));
+		D7.setUserData(new Note("A", 57, 2, 7));
+		D8.setUserData(new Note("A#", 58, 2, 8));
+		D9.setUserData(new Note("B", 59, 2, 9));
+		D10.setUserData(new Note("C", 60, 3, 10));
+		D11.setUserData(new Note("C#", 61, 3, 11));
+		D12.setUserData(new Note("D", 62, 3, 12));
+		D13.setUserData(new Note("D#", 63, 3, 13));
+		D14.setUserData(new Note("E", 64, 3, 14));
+		D15.setUserData(new Note("F", 65, 3, 15));
 
 		D0.setLayoutX(5);
 		D0.setLayoutY(125);
@@ -368,6 +365,7 @@ public class ScaleFretboard extends Pane{
 
 	
 
+
 		RadioButton A0 = new RadioButton("A");
 		RadioButton A1 = new RadioButton("A#");
 		RadioButton A2 = new RadioButton("B");
@@ -386,22 +384,22 @@ public class ScaleFretboard extends Pane{
 		RadioButton A15 = new RadioButton("C");
 
 
-		A0.setUserData(new Note("A", 45, 1));
-		A1.setUserData(new Note("A#", 46, 1));
-		A2.setUserData(new Note("B", 47, 1));
-		A3.setUserData(new Note("C", 48, 2));
-		A4.setUserData(new Note("C#", 49, 2));
-		A5.setUserData(new Note("D", 50, 2));
-		A6.setUserData(new Note("D#", 51, 2));
-		A7.setUserData(new Note("E", 52, 2));
-		A8.setUserData(new Note("F", 53, 2));
-		A9.setUserData(new Note("F#", 54, 2));
-		A10.setUserData(new Note("G", 55, 2));
-		A11.setUserData(new Note("G#", 56, 2));
-		A12.setUserData(new Note("A", 57, 2));
-		A13.setUserData(new Note("A#", 58, 2));
-		A14.setUserData(new Note("B", 59, 2));
-		A15.setUserData(new Note("C", 60, 3));
+		A0.setUserData(new Note("A", 45, 1, 0));
+		A1.setUserData(new Note("A#", 46, 1, 1));
+		A2.setUserData(new Note("B", 47, 1, 2));
+		A3.setUserData(new Note("C", 48, 2, 3));
+		A4.setUserData(new Note("C#", 49, 2, 4));
+		A5.setUserData(new Note("D", 50, 2, 5));
+		A6.setUserData(new Note("D#", 51, 2, 6));
+		A7.setUserData(new Note("E", 52, 2,7));
+		A8.setUserData(new Note("F", 53, 2, 8));
+		A9.setUserData(new Note("F#", 54, 2, 9));
+		A10.setUserData(new Note("G", 55, 2, 10));
+		A11.setUserData(new Note("G#", 56, 2, 11));
+		A12.setUserData(new Note("A", 57, 2, 12));
+		A13.setUserData(new Note("A#", 58, 2, 13));
+		A14.setUserData(new Note("B", 59, 2, 14));
+		A15.setUserData(new Note("C", 60, 3, 15));
 
 		A0.setLayoutX(5);
 		A0.setLayoutY(165);
@@ -455,22 +453,22 @@ public class ScaleFretboard extends Pane{
 		RadioButton lowE14 = new RadioButton("F#");
 		RadioButton lowE15 = new RadioButton("G");
 
-		lowE0.setUserData(new Note("E", 40, 1));
-		lowE1.setUserData(new Note("F", 41, 1));
-		lowE2.setUserData(new Note("F#", 42, 1));
-		lowE3.setUserData(new Note("G", 43, 1));
-		lowE4.setUserData(new Note("G#", 44, 1));
-		lowE5.setUserData(new Note("A", 45, 1));
-		lowE6.setUserData(new Note("A#", 46, 1));
-		lowE7.setUserData(new Note("B", 47, 1));
-		lowE8.setUserData(new Note("C", 48, 2));
-		lowE9.setUserData(new Note("C#", 49, 2));
-		lowE10.setUserData(new Note("D", 50, 2));
-		lowE11.setUserData(new Note("D#", 51, 2));
-		lowE12.setUserData(new Note("E", 52, 2));
-		lowE13.setUserData(new Note("F", 53, 2));
-		lowE14.setUserData(new Note("F#", 54, 2));
-		lowE15.setUserData(new Note("G", 55, 2));
+		lowE0.setUserData(new Note("E", 40, 1, 0));
+		lowE1.setUserData(new Note("F", 41, 1, 1));
+		lowE2.setUserData(new Note("F#", 42, 1, 2));
+		lowE3.setUserData(new Note("G", 43, 1, 3));
+		lowE4.setUserData(new Note("G#", 44, 1, 4));
+		lowE5.setUserData(new Note("A", 45, 1, 5));
+		lowE6.setUserData(new Note("A#", 46, 1, 6));
+		lowE7.setUserData(new Note("B", 47, 1, 7));
+		lowE8.setUserData(new Note("C", 48, 2, 8));
+		lowE9.setUserData(new Note("C#", 49, 2, 9));
+		lowE10.setUserData(new Note("D", 50, 2, 10));
+		lowE11.setUserData(new Note("D#", 51, 2, 11));
+		lowE12.setUserData(new Note("E", 52, 2, 12));
+		lowE13.setUserData(new Note("F", 53, 2, 13));
+		lowE14.setUserData(new Note("F#", 54, 2, 14));
+		lowE15.setUserData(new Note("G", 55, 2, 15));
 
 		lowE0.setLayoutX(5);
 		lowE0.setLayoutY(205);
@@ -505,105 +503,116 @@ public class ScaleFretboard extends Pane{
 		lowE15.setLayoutX(755);
 		lowE15.setLayoutY(205);
 		
-		buttonList.add(highE0);
-		buttonList.add(highE1);
-		buttonList.add(highE2);
-		buttonList.add(highE3);
-		buttonList.add(highE4);
-		buttonList.add(highE5);
-		buttonList.add(highE6);
-		buttonList.add(highE7);
-		buttonList.add(highE8);
-		buttonList.add(highE9);
-		buttonList.add(highE10);
-		buttonList.add(highE11);
-		buttonList.add(highE12);
-		buttonList.add(highE13);
-		buttonList.add(highE14);
-		buttonList.add(highE15);
-		buttonList.add(B0);
-		buttonList.add(B1);
-		buttonList.add(B2);
-		buttonList.add(B3);
-		buttonList.add(B4);
-		buttonList.add(B5);
-		buttonList.add(B6);
-		buttonList.add(B7);
-		buttonList.add(B8);
-		buttonList.add(B9);
-		buttonList.add(B10);
-		buttonList.add(B11);
-		buttonList.add(B12);
-		buttonList.add(B13);
-		buttonList.add(B14);
-		buttonList.add(B15);
-		buttonList.add(G0);
-		buttonList.add(G1);
-		buttonList.add(G2);
-		buttonList.add(G3);
-		buttonList.add(G4);
-		buttonList.add(G5);
-		buttonList.add(G6);
-		buttonList.add(G7);
-		buttonList.add(G8);
-		buttonList.add(G9);
-		buttonList.add(G10);
-		buttonList.add(G11);
-		buttonList.add(G12);
-		buttonList.add(G13);
-		buttonList.add(G14);
-		buttonList.add(G15);
-		buttonList.add(D0);
-		buttonList.add(D1);
-		buttonList.add(D2);
-		buttonList.add(D3);
-		buttonList.add(D4);
-		buttonList.add(D5);
-		buttonList.add(D6);
-		buttonList.add(D7);
-		buttonList.add(D8);
-		buttonList.add(D9);
-		buttonList.add(D10);
-		buttonList.add(D11);
-		buttonList.add(D12);
-		buttonList.add(D13);
-		buttonList.add(D14);
-		buttonList.add(D15);
-		buttonList.add(A0);
-		buttonList.add(A1);
-		buttonList.add(A2);
-		buttonList.add(A3);
-		buttonList.add(A4);
-		buttonList.add(A5);
-		buttonList.add(A6);
-		buttonList.add(A7);
-		buttonList.add(A8);
-		buttonList.add(A9);
-		buttonList.add(A10);
-		buttonList.add(A11);
-		buttonList.add(A12);
-		buttonList.add(A13);
-		buttonList.add(A14);
-		buttonList.add(A15);
-		buttonList.add(lowE0);
-		buttonList.add(lowE1);
-		buttonList.add(lowE2);
-		buttonList.add(lowE3);
-		buttonList.add(lowE4);
-		buttonList.add(lowE5);
-		buttonList.add(lowE6);
-		buttonList.add(lowE7);
-		buttonList.add(lowE8);
-		buttonList.add(lowE9);
-		buttonList.add(lowE10);
-		buttonList.add(lowE11);
-		buttonList.add(lowE12);
-		buttonList.add(lowE13);
-		buttonList.add(lowE14);
-		buttonList.add(lowE15);
-		for(RadioButton noteButton:buttonList) {
-			noteButton.setDisable(true);
-		}
+		highE = new RadioButton[16];
+		B = new RadioButton[16];
+		G = new RadioButton[16];
+		D = new RadioButton[16];
+		A = new RadioButton[16];
+		lowE = new RadioButton[16];
+		
+		highE[0] = highE0;
+		highE[1] = highE1;
+		highE[2] = highE2;
+		highE[3] = highE3;
+		highE[4] = highE4;
+		highE[5] = highE5;
+		highE[6] = highE6;
+		highE[7] = highE7;
+		highE[8] = highE8;
+		highE[9] = highE9;
+		highE[10] = highE10;
+		highE[11] = highE11;
+		highE[12] = highE12;
+		highE[13] = highE13;
+		highE[14] = highE14;
+		highE[15] = highE15;
+		
+		B[0] = B0;
+		B[1] = B1;
+		B[2] = B2;
+		B[3] = B3;
+		B[4] = B4;
+		B[5] = B5;
+		B[6] = B6;
+		B[7] = B7;
+		B[8] = B8;
+		B[9] = B9;
+		B[10] = B10;
+		B[11] = B11;
+		B[12] = B12;
+		B[13] = B13;
+		B[14] = B14;
+		B[15] = B15;
+		
+		G[0] = G0;
+		G[1] = G1;
+		G[2] = G2;
+		G[3] = G3;
+		G[4] = G4;
+		G[5] = G5;
+		G[6] = G6;
+		G[7] = G7;
+		G[8] = G8;
+		G[9] = G9;
+		G[10] = G10;
+		G[11] = G11;
+		G[12] = G12;
+		G[13] = G13;
+		G[14] = G14;
+		G[15] = G15;
+		
+		D[0] = D0;
+		D[1] = D1;
+		D[2] = D2;
+		D[3] = D3;
+		D[4] = D4;
+		D[5] = D5;
+		D[6] = D6;
+		D[7] = D7;
+		D[8] = D8;
+		D[9] = D9;
+		D[10] = D10;
+		D[11] = D11;
+		D[12] = D12;
+		D[13] = D13;
+		D[14] = D14;
+		D[15] = D15;
+		
+		A[0] = A0;
+		A[1] = A1;
+		A[2] = A2;
+		A[3] = A3;
+		A[4] = A4;
+		A[5] = A5;
+		A[6] = A6;
+		A[7] = A7;
+		A[8] = A8;
+		A[9] = A9;
+		A[10] = A10;
+		A[11] = A11;
+		A[12] = A12;
+		A[13] = A13;
+		A[14] = A14;
+		A[15] = A15;
+		
+		lowE[0] = lowE0;
+		lowE[1] = lowE1;
+		lowE[2] = lowE2;
+		lowE[3] = lowE3;
+		lowE[4] = lowE4;
+		lowE[5] = lowE5;
+		lowE[6] = lowE6;
+		lowE[7] = lowE7;
+		lowE[8] = lowE8;
+		lowE[9] = lowE9;
+		lowE[10] = lowE10;
+		lowE[11] = lowE11;
+		lowE[12] = lowE12;
+		lowE[13] = lowE13;
+		lowE[14] = lowE14;
+		lowE[15] = lowE15;
+		
+		
 		
 		this.getChildren().addAll(circle3, circle5, circle7, circle9, circle12A, circle12B, circle15, highE0, highE1,
 				highE2, highE3, highE4, highE5, highE6, highE7, highE8, highE9, highE10, highE11, highE12, highE13,
@@ -614,57 +623,65 @@ public class ScaleFretboard extends Pane{
 				);
 
 	}
-
-	public static void updateNotes() { // change
-		for(int i=0;i<buttonList.size();i++) {
-			buttonList.get(i).setSelected(false);
-		}
-		ScaleButtons.setCurrentNoteScaleText(currentNote+currentScale);
-		if(currentScale!=null&&currentNote!=null) {
-			int[] intervals = scaleMap.get(currentScale);
-			if(intervals!=null) {
-				Note[] scaleNotes = generateScales(currentNote,intervals);
-				for(int i=0;i<buttonList.size();i++) {
-					Note buttonNote = (Note) buttonList.get(i).getUserData();
-					for(Note note:scaleNotes) {
-						if(note.equals(buttonNote)) {
-							buttonList.get(i).setDisable(false);
-							buttonList.get(i).fire();
-						}
-					}
-				}
-			}
-		}
+	public static String getCurrChordName() {
+		return currChordName;
+	}
+	public static void setCurrChordName(String currChordName) {
+		ChordFingeringFretboard.currChordName = currChordName;
+	}
+	public void nextVariation() {
 		
 	}
-	public static Note[] generateScales(String note, int[] intervals) {
-		Note[] notes = new Note[intervals.length];
-		int rootPos = -1;
-		for(int i=0;i<noteSequence.length;i++) {
-			if(noteSequence[i].equals(note)) {
-				rootPos = i;
-				break;
+	public void updateNotes() {
+		for(RadioButton noteButton:highE) {
+			noteButton.setSelected(false);;
+		}
+		for(RadioButton noteButton:lowE) {
+			noteButton.setSelected(false);;
+		}
+		for(RadioButton noteButton:A) {
+			noteButton.setSelected(false);;
+		}
+		for(RadioButton noteButton:G) {
+			noteButton.setSelected(false);;
+		}
+		for(RadioButton noteButton:B) {
+			noteButton.setSelected(false);;
+		}
+		for(RadioButton noteButton:D) {
+			noteButton.setSelected(false);;
+		}
+		possibleFingering.clear();
+		for(Chord chord : chordsList) {
+			if(chord.getName().equals(currChordName)) {
+				int[] fingering = chord.getFingerPos();
+				possibleFingering.add(fingering);
+				
 			}
+			
 		}
-		for(int i=0;i<intervals.length;i++) {
-			notes[i] = new Note(noteSequence[(rootPos + intervals[i])%12],0,0);
+		fireNotes();
+	}
+	public void fireNotes() {
+		System.out.println("wo");
+		int[] fingering = possibleFingering.get(currentPos);
+		if(fingering[0]!=-1) {
+			lowE[fingering[0]].fire();
 		}
-		
-		return notes;
-	}
-	public static String getCurrentNote() {
-		return currentNote;
-	}
-
-	public static void setCurrentNote(String currentNote) {
-		ScaleFretboard.currentNote = currentNote;
-	}
-
-	public static String getCurrentScale() {
-		return currentScale;
-	}
-
-	public static void setCurrentScale(String currentScale) {
-		ScaleFretboard.currentScale = currentScale;
+		if(fingering[1]!=-1) {
+			A[fingering[1]].fire();
+		}
+		if(fingering[2]!=-1) {
+			D[fingering[2]].fire();
+		}
+		if(fingering[3]!=-1) {
+			G[fingering[3]].fire();
+		}
+		if(fingering[4]!=-1) {
+			B[fingering[4]].fire();
+		}
+		if(fingering[5]!=-1) {
+			highE[fingering[5]].fire();
+		}
 	}
 }

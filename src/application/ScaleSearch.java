@@ -77,7 +77,7 @@ public class ScaleSearch extends Pane{
 		    	if(ScaleFretboard.getCurrentScale()!=null) {
 		    		//System.out.println(scaleLibrary.getScaleMap().keySet());
 		    		int[] intervals = ScaleLibrary.getScaleMap().get(ScaleFretboard.getCurrentScale());
-		    		System.out.println(Arrays.toString(intervals));
+		    		//System.out.println(Arrays.toString(intervals));
 		    		String currentNote = ScaleFretboard.getCurrentNote();
 		    		int midinote = -1;
 		    		for(int i=0;i<noteSequence.length;i++) {

@@ -32,6 +32,7 @@ public class ScaleButtons extends Pane{
 		String css = this.getClass().getResource("scale.css").toExternalForm();
 		this.getStylesheets().add(css);
 		currentNoteScale = new Label("");
+		currentNoteScale.setId("noteScaleLabel");
 		VBox noteScaleVBox = new VBox(3);
 		noteScaleVBox.setId("rootVBox");
 		HBox noteHBox = new HBox(12);
