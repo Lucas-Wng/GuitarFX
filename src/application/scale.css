@@ -35,3 +35,11 @@
 
 
 }
+
+.toggle-button{
+	
+}
+.toggle-button:selected{
+	-fx-background-color: green;
+	-fx-text-fill: white;
+}

@@ -28,6 +28,7 @@ public class ScaleButtons extends Pane{
 	private ToggleButton GSharpNote;
 	private ToggleGroup noteGroup;
 	private static Label currentNoteScale;
+	private static ToggleGroup scaleGroup;
 	public ScaleButtons() {
 		String css = this.getClass().getResource("scale.css").toExternalForm();
 		this.getStylesheets().add(css);
@@ -77,7 +78,7 @@ public class ScaleButtons extends Pane{
 		noteHBox.getChildren().addAll(ANote, ASharpNote,BNote,CNote,CSharpNote,
 				DNote,DSharpNote, ENote, FNote, FSharpNote, GNote, GSharpNote);
 		
-		ToggleGroup scaleGroup = new ToggleGroup();
+		scaleGroup = new ToggleGroup();
 		RadioButton major = new RadioButton("Major");
 		RadioButton minor = new RadioButton("Minor");
 		RadioButton minorPentatonic = new RadioButton("MinorPentatonic");
@@ -143,6 +144,10 @@ public class ScaleButtons extends Pane{
 	}
 	public static void setCurrentNoteScaleText(String text) {
 		ScaleButtons.currentNoteScale.setText(text);;
+	}
+	
+	public static void clearScaleGroup() {
+		ScaleButtons.scaleGroup.selectToggle(null);;
 	}
 	
 }

@@ -1,9 +1,13 @@
 package application;
 
 import java.net.URL;
+import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -35,11 +39,11 @@ public class ScaleSearch extends Pane{
 	
 
 	public ScaleSearch() {
+		System.out.println(levenshteinDistance("bitten", "biting"));
 		midiplayer = new MidiPlayer();
 		HBox searchHBox = new HBox(2);
 		VBox searchVBox = new VBox(3);
 		scaleLibrary = new ScaleLibrary();
-
 		// System.out.println(Arrays.deepToString(scaleNames.toArray()));
 		scaleNames = new ArrayList<String>(ScaleLibrary.getScaleMap().keySet());
 		ObservableList<String> scaleObservableList = FXCollections.observableArrayList(scaleNames);
@@ -66,6 +70,7 @@ public class ScaleSearch extends Pane{
 		    	if(newValue!=null) {
 		    		ScaleFretboard.setCurrentScale(newValue);
 		    		ScaleFretboard.updateNotes();
+		    		ScaleButtons.clearScaleGroup();
 		    	}
 		    }
 		});
@@ -122,17 +127,64 @@ public class ScaleSearch extends Pane{
 	}
 
 	private List<String> searchList(String searchWords, List<String> listOfStrings) {
+		List<String> searchWordsArray = new ArrayList<String>();
+		Map<String,Integer> wordsMap = new HashMap<String,Integer>();
+		for(String listWord:listOfStrings) {
+			int similarity = levenshteinDistance(listWord.toLowerCase(), searchWords.toLowerCase());
+			if(similarity<=5) {
+				wordsMap.put(listWord, similarity);
+			}
+		}
+		return insertionSortHashMap(wordsMap);
 
-		List<String> searchWordsArray = Arrays.asList(searchWords.trim().split(" "));
+	}
+	public static List<String> insertionSortHashMap(Map<String, Integer> wordsMap) {
+	    // convert the HashMap to a List of Map.Entry objects
+	    List<Map.Entry<String, Integer>> wordsMapList = new ArrayList<>(wordsMap.entrySet());
 
-		return listOfStrings.stream().filter(input -> {
-			return searchWordsArray.stream().allMatch(word -> input.toLowerCase().contains(word.toLowerCase()));
-		}).collect(Collectors.toList());
+	    // sort the wordsMapList using insertion sort algorithm
+	    for (int i = 1; i < wordsMapList.size(); i++) {
+	        Map.Entry<String, Integer> current = wordsMapList.get(i);
+	        int j = i - 1;
+	        while (j >= 0 && wordsMapList.get(j).getValue() > current.getValue()) {
+	            wordsMapList.set(j + 1, wordsMapList.get(j));
+	            j--;
+	        }
+	        wordsMapList.set(j + 1, current);
+	    }
+	    List<String> searchStringList = new ArrayList<String>();
+	    for(Entry<String, Integer> search:wordsMapList) {
+	    	searchStringList.add(search.getKey());
+	    }
+	    return searchStringList;
 	}
-	public List<String> quickSort(){
-		return null;
-		
+
+	public static int levenshteinDistance(String s1, String s2) {
+	    int m = s1.length();
+	    int n = s2.length();
+	    int[][] dp = new int[m+1][n+1];
+	    for (int i = 0; i <= m; i++) {
+	        dp[i][0] = i;
+	    }
+	    for (int j = 0; j <= n; j++) {
+	        dp[0][j] = j;
+	    }
+	    for (int i = 1; i <= m; i++) {
+	        for (int j = 1; j <= n; j++) {
+	        	int substitutionCost;
+	        	if (s1.charAt(i-1) == s2.charAt(j-1)) {
+	        	    substitutionCost = 0;
+	        	} else {
+	        	    substitutionCost = 1;
+	        	}
+	            dp[i][j] = Math.min(Math.min(dp[i-1][j]+1, dp[i][j-1]+1), dp[i-1][j-1]+substitutionCost);
+	        }
+	    }
+
+	    return dp[m][n];
 	}
+
+
 	public String binarySearch() {
 		return null;
 		
