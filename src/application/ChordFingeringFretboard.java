@@ -17,14 +17,17 @@ public class ChordFingeringFretboard extends Pane{
 	private static RadioButton[] A;
 	private static RadioButton[] lowE;
 	private static ArrayList<Chord> chordsList;
-	private static String currChordName;
+	private static String currChordNote;
+	private static String currChordType;
 	private static ArrayList<int[]> possibleFingering;
 	private static int currentPos;
 	public ChordFingeringFretboard() {
 		String css = this.getClass().getResource("fretboard.css").toExternalForm();
 		this.getStylesheets().add(css);
-		currChordName = null;
-		setCurrChordName("Cmaj");
+		currChordNote = null;
+		currChordType = null;
+		setCurrChordNote("A");
+		setCurrChordType("maj");
 		chordsList = ChordLibrary.list;
 		createFretboard();
 		updateNotes();
@@ -623,16 +626,33 @@ public class ChordFingeringFretboard extends Pane{
 				);
 
 	}
-	public static String getCurrChordName() {
-		return currChordName;
+	
+	public static void nextVariation() {
+		if(currentPos<possibleFingering.size()-1) {
+			currentPos++;
+		}
+		fireNotes();
 	}
-	public static void setCurrChordName(String currChordName) {
-		ChordFingeringFretboard.currChordName = currChordName;
+	public static void prevVariation() {
+		if(currentPos>0) {
+			currentPos--;
+		}
+		fireNotes();
 	}
-	public void nextVariation() {
-		
+	
+	public static String getCurrChordNote() {
+		return currChordNote;
 	}
-	public void updateNotes() {
+	public static void setCurrChordNote(String currChordNote) {
+		ChordFingeringFretboard.currChordNote = currChordNote;
+	}
+	public static String getCurrChordType() {
+		return currChordType;
+	}
+	public static void setCurrChordType(String currChordType) {
+		ChordFingeringFretboard.currChordType = currChordType;
+	}
+	public static void clearFretboard() {
 		for(RadioButton noteButton:highE) {
 			noteButton.setSelected(false);;
 		}
@@ -651,18 +671,24 @@ public class ChordFingeringFretboard extends Pane{
 		for(RadioButton noteButton:D) {
 			noteButton.setSelected(false);;
 		}
+	}
+	public static void updateNotes() {
+		clearFretboard();
 		possibleFingering.clear();
-		for(Chord chord : chordsList) {
-			if(chord.getName().equals(currChordName)) {
-				int[] fingering = chord.getFingerPos();
-				possibleFingering.add(fingering);
+		if(currChordNote!=null&&currChordType!=null) {
+			for(Chord chord : chordsList) {
+				if(chord.getName().equals(currChordNote+currChordType)) {
+					int[] fingering = chord.getFingerPos();
+					possibleFingering.add(fingering);
+					
+				}
 				
 			}
-			
 		}
 		fireNotes();
 	}
-	public void fireNotes() {
+	public static void fireNotes() {
+		clearFretboard();
 		int[] fingering = possibleFingering.get(currentPos);
 		if(fingering[0]!=-1) {
 			lowE[fingering[0]].fire();
