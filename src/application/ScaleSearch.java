@@ -39,7 +39,6 @@ public class ScaleSearch extends Pane{
 	
 
 	public ScaleSearch() {
-		System.out.println(levenshteinDistance("bitten", "biting"));
 		midiplayer = new MidiPlayer();
 		HBox searchHBox = new HBox(2);
 		VBox searchVBox = new VBox(3);
@@ -127,7 +126,6 @@ public class ScaleSearch extends Pane{
 	}
 
 	private List<String> searchList(String searchWords, List<String> listOfStrings) {
-		List<String> searchWordsArray = new ArrayList<String>();
 		Map<String,Integer> wordsMap = new HashMap<String,Integer>();
 		for(String listWord:listOfStrings) {
 			int similarity = levenshteinDistance(listWord.toLowerCase(), searchWords.toLowerCase());
@@ -139,10 +137,7 @@ public class ScaleSearch extends Pane{
 
 	}
 	public static List<String> insertionSortHashMap(Map<String, Integer> wordsMap) {
-	    // convert the HashMap to a List of Map.Entry objects
 	    List<Map.Entry<String, Integer>> wordsMapList = new ArrayList<>(wordsMap.entrySet());
-
-	    // sort the wordsMapList using insertion sort algorithm
 	    for (int i = 1; i < wordsMapList.size(); i++) {
 	        Map.Entry<String, Integer> current = wordsMapList.get(i);
 	        int j = i - 1;

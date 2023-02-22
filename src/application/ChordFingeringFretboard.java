@@ -663,7 +663,6 @@ public class ChordFingeringFretboard extends Pane{
 		fireNotes();
 	}
 	public void fireNotes() {
-		System.out.println("wo");
 		int[] fingering = possibleFingering.get(currentPos);
 		if(fingering[0]!=-1) {
 			lowE[fingering[0]].fire();
