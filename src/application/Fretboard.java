@@ -1027,10 +1027,6 @@ public class Fretboard extends Pane {
 		sharplowE.setVisible(false);
 	}
 
-	public static void moveSelectionUp() {
-
-	}
-
 	public static double getStaffNotePos(String note) {
 		if (note.equals("A")) {
 			return 545;
@@ -1070,8 +1066,6 @@ public class Fretboard extends Pane {
 		}
 		return 0;
 	}
-	public static void getInterval() {
-		
-	}
+
 
 }

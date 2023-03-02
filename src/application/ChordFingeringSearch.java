@@ -21,16 +21,20 @@ public class ChordFingeringSearch extends Pane{
 	private Button searchButton;
 	private Button playArpeggioButton;
 	private Button playChordButton;
+	private Button writeChord;
+	private Button clearFile;
 	private ListView<String> listView;
 	private List<String> chordList;
 	public ChordFingeringSearch() {
-		HBox nextPrevBox = new HBox(4);
+		HBox nextPrevBox = new HBox(6);
 		Button next = new Button(">");
 		Button prev = new Button("<");
 		searchBar = new TextField();
 		searchButton = new Button("Search");
 		playArpeggioButton = new Button("Play");
 		playChordButton = new Button("Play");
+		writeChord = new Button("Write Chord");
+		clearFile = new Button("Clear File");
 		chordList = FretPosJSONReader.getChordTypeList();
 		ObservableList<String> chordObservableList = FXCollections.observableArrayList(chordList);
 		listView = new ListView<String>(chordObservableList);
@@ -79,6 +83,27 @@ public class ChordFingeringSearch extends Pane{
 
 		});
 		
+		writeChord.setOnAction(new EventHandler<ActionEvent>() {
+			 
+		    @Override
+		    public void handle(ActionEvent event) {
+		    	if(ChordFingeringFretboard.getCurrChordNote()!=null&&ChordFingeringFretboard.getCurrChordType()!=null&&ChordFingeringFretboard.getCurrentNotes()!=null) {
+		    		ChordFingeringFileWriter.writeChord(ChordFingeringFretboard.getCurrChordNote()+ChordFingeringFretboard.getCurrChordType(), ChordFingeringFretboard.getCurrentNotes());
+		    	}
+		    	
+		    }
+
+		});
+		
+		clearFile.setOnAction(new EventHandler<ActionEvent>() {
+			 
+		    @Override
+		    public void handle(ActionEvent event) {
+		    	ChordFingeringFileWriter.clearFile();
+		    }
+
+		});
+		
 		listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -86,14 +111,14 @@ public class ChordFingeringSearch extends Pane{
 		    	if(newValue!=null) {
 		    		ChordFingeringFretboard.setCurrChordType(newValue);
 		    		ChordFingeringFretboard.updateNotes();
+		    		ChordFingeringButtons.updateText();
 		    	}
 		    }
 		});
 		HBox searchHBox = new HBox(2);
 		VBox searchVBox = new VBox(3);
-		HBox buttonPlayHBox = new HBox(3);
 		searchHBox.getChildren().addAll(searchBar, searchButton);
-		nextPrevBox.getChildren().addAll(prev,next,playArpeggioButton,playChordButton);
+		nextPrevBox.getChildren().addAll(prev,next,playArpeggioButton,playChordButton,writeChord,clearFile);
 		searchVBox.getChildren().addAll(searchHBox, listView, nextPrevBox);
 		this.getChildren().addAll(searchVBox);
 	}

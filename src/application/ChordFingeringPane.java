@@ -15,8 +15,6 @@ public class ChordFingeringPane extends VBox{
 //		System.out.println(Arrays.toString(ChordLibrary.list.get(1).getFingerPos()));
 		ChordFingeringFretboard fretboard = new ChordFingeringFretboard();
 		ChordFingeringButtons buttons = new ChordFingeringButtons();
-		ChordFingeringFileWriter fileWriter = new ChordFingeringFileWriter(); 
-		ChordFingeringFileWriter.writeChord(2);
 		ChordFingeringSearch search = new ChordFingeringSearch();
 		fretboardSearchBox.getChildren().addAll(fretboard,search);
 		this.getChildren().addAll(navBar,fretboardSearchBox,buttons);

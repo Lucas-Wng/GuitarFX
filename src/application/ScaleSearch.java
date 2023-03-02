@@ -31,7 +31,6 @@ public class ScaleSearch extends Pane{
 	private ListView<String> listView;
 	private ScaleLibrary scaleLibrary;
 	private List<String> scaleNames;
-	private static MidiPlayer midiplayer;
 	private Button playScaleButton;
 	final private static String[] noteSequence = { "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G",
 	"G#" };

@@ -33,7 +33,7 @@ public class Main extends Application {
 			sceneController.addScreen("analyzer", analyzerpane);
 			sceneController.addScreen("scales", scalepane);
 			sceneController.addScreen("chord library", chordpane);
-			SceneController.activate("analyzer");
+			SceneController.activate("chord library");
 			
 			
 			scene.getStylesheets().add(css);

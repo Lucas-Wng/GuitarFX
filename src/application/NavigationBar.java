@@ -42,7 +42,7 @@ public class NavigationBar extends HBox {
 		    }
 
 		});
-		this.getChildren().addAll(analyzerButton, scaleButton, chordLibraryButton);
+		this.getChildren().addAll(chordLibraryButton, analyzerButton, scaleButton);
 	}
 
 

@@ -599,6 +599,15 @@ public class ChordFingeringFretboard extends Pane {
 		lowE[14] = lowE14;
 		lowE[15] = lowE15;
 
+		for(int i=0;i<16;i++) {
+			lowE[i].setDisable(true);
+			A[i].setDisable(true);
+			B[i].setDisable(true);
+			D[i].setDisable(true);
+			G[i].setDisable(true);
+			highE[i].setDisable(true);
+		}
+		
 		this.getChildren().addAll(circle3, circle5, circle7, circle9, circle12A, circle12B, circle15, highE0, highE1,
 				highE2, highE3, highE4, highE5, highE6, highE7, highE8, highE9, highE10, highE11, highE12, highE13,
 				highE14, highE15, B0, B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11, B12, B13, B14, B15, G0, G1, G2, G3,
@@ -644,7 +653,7 @@ public class ChordFingeringFretboard extends Pane {
 		if(frets[0]!=-1) {
 			MidiPlayer.playNote(((Note)lowE[frets[0]].getUserData()).getMidiNoteNumber());
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(600);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -653,7 +662,7 @@ public class ChordFingeringFretboard extends Pane {
 		if(frets[1]!=-1) {
 			MidiPlayer.playNote(((Note)A[frets[1]].getUserData()).getMidiNoteNumber());
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(600);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -662,7 +671,7 @@ public class ChordFingeringFretboard extends Pane {
 		if(frets[2]!=-1) {
 			MidiPlayer.playNote(((Note)D[frets[2]].getUserData()).getMidiNoteNumber());
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(600);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -671,7 +680,7 @@ public class ChordFingeringFretboard extends Pane {
 		if(frets[3]!=-1) {
 			MidiPlayer.playNote(((Note)G[frets[3]].getUserData()).getMidiNoteNumber());
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(600);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -680,7 +689,7 @@ public class ChordFingeringFretboard extends Pane {
 		if(frets[4]!=-1) {
 			MidiPlayer.playNote(((Note)B[frets[4]].getUserData()).getMidiNoteNumber());
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(600);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -689,7 +698,7 @@ public class ChordFingeringFretboard extends Pane {
 		if(frets[5]!=-1) {
 			MidiPlayer.playNote(((Note)highE[frets[5]].getUserData()).getMidiNoteNumber());
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(600);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -771,21 +780,28 @@ public class ChordFingeringFretboard extends Pane {
 
 			int[] fingering = possibleFingering.get(currentPos);
 			if (fingering[0] != -1) {
+				lowE[fingering[0]].setDisable(false);
 				lowE[fingering[0]].fire();
+				
 			}
 			if (fingering[1] != -1) {
+				A[fingering[1]].setDisable(false);
 				A[fingering[1]].fire();
 			}
 			if (fingering[2] != -1) {
+				D[fingering[2]].setDisable(false);
 				D[fingering[2]].fire();
 			}
 			if (fingering[3] != -1) {
+				G[fingering[3]].setDisable(false);
 				G[fingering[3]].fire();
 			}
 			if (fingering[4] != -1) {
+				B[fingering[4]].setDisable(false);
 				B[fingering[4]].fire();
 			}
 			if (fingering[5] != -1) {
+				highE[fingering[5]].setDisable(false);
 				highE[fingering[5]].fire();
 			}
 		}

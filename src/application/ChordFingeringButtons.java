@@ -82,6 +82,7 @@ public class ChordFingeringButtons extends Pane{
 		    	if(selectedNote!=null) {
 
 		    		ChordFingeringFretboard.setCurrChordNote((String) selectedNote.getUserData());
+		    		updateText();
 		    		ChordFingeringFretboard.updateNotes();
 		    	}
 		     } 
@@ -153,6 +154,7 @@ public class ChordFingeringButtons extends Pane{
 		         if (chordGroup.getSelectedToggle() != null) {
 		        	 String selectedScaleButton = (String) ((RadioButton)chordGroup.getSelectedToggle()).getUserData();
 		        	 ChordFingeringFretboard.setCurrChordType(selectedScaleButton);
+		        	 updateText();
 		        	 ChordFingeringFretboard.updateNotes();
 		         }
 
@@ -160,5 +162,8 @@ public class ChordFingeringButtons extends Pane{
 		});
 		
 		this.getChildren().add(noteChordVBox);
+	}
+	public static void updateText() {
+		currentNoteChord.setText(ChordFingeringFretboard.getCurrChordNote()+ChordFingeringFretboard.getCurrChordType());
 	}
 }
