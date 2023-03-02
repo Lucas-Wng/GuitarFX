@@ -7,7 +7,7 @@ import javax.sound.midi.Synthesizer;
 
 public class MidiPlayer {
     private Synthesizer synth;
-    private final MidiChannel channel;
+    private static MidiChannel channel;
 
     // Sets the maxValue to the biggest value of the array
     public MidiPlayer() {
@@ -22,7 +22,7 @@ public class MidiPlayer {
         channel.programChange(26);
     }
 
-    public void playNote(int value) {
+    public static void playNote(int value) {
         channel.noteOn(value, 75);
 //        try { Thread.sleep(600); // wait time in milliseconds to control duration
 //        } catch( InterruptedException e ) {
@@ -30,7 +30,7 @@ public class MidiPlayer {
 //        }
 //        channel.noteOff(value);
     }
-    public void stopSound() {
+    public static void stopSound() {
     	channel.allNotesOff();
     }
 }

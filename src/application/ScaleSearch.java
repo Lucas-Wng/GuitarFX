@@ -31,7 +31,7 @@ public class ScaleSearch extends Pane{
 	private ListView<String> listView;
 	private ScaleLibrary scaleLibrary;
 	private List<String> scaleNames;
-	private MidiPlayer midiplayer;
+	private static MidiPlayer midiplayer;
 	private Button playScaleButton;
 	final private static String[] noteSequence = { "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G",
 	"G#" };
@@ -39,7 +39,6 @@ public class ScaleSearch extends Pane{
 	
 
 	public ScaleSearch() {
-		midiplayer = new MidiPlayer();
 		HBox searchHBox = new HBox(2);
 		VBox searchVBox = new VBox(3);
 		scaleLibrary = new ScaleLibrary();
@@ -81,34 +80,8 @@ public class ScaleSearch extends Pane{
 		    	if(ScaleFretboard.getCurrentScale()!=null) {
 		    		//System.out.println(scaleLibrary.getScaleMap().keySet());
 		    		int[] intervals = ScaleLibrary.getScaleMap().get(ScaleFretboard.getCurrentScale());
-		    		//System.out.println(Arrays.toString(intervals));
-		    		String currentNote = ScaleFretboard.getCurrentNote();
-		    		int midinote = -1;
-		    		for(int i=0;i<noteSequence.length;i++) {
-		    			if(noteSequence[i].equals(currentNote)) {
-		    				midinote = i;
-		    				break;
-		    			}
-		    		}
+		    		playIntervalsSound(intervals);
 		    		
-		    		for(int i=0;i<intervals.length;i++) {
-		    			midiplayer.playNote(midiNoteSequence[midinote]+intervals[i]);
-		    			try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-		    			midiplayer.stopSound();
-		    		}
-		    		midiplayer.playNote(midiNoteSequence[midinote]+12);
-		    		try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-		    		midiplayer.stopSound();
 		    	}
 		    }
 
@@ -118,14 +91,42 @@ public class ScaleSearch extends Pane{
 		searchVBox.getChildren().addAll(searchHBox, listView,playScaleButton);
 		this.getChildren().addAll(searchVBox);
 	}
-
+	public static void playIntervalsSound(int[] intervals) {
+		String currentNote = ScaleFretboard.getCurrentNote();
+		int midinote = -1;
+		for(int i=0;i<noteSequence.length;i++) {
+			if(noteSequence[i].equals(currentNote)) {
+				midinote = i;
+				break;
+			}
+		}
+		
+		for(int i=0;i<intervals.length;i++) {
+			MidiPlayer.playNote(midiNoteSequence[midinote]+intervals[i]);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			MidiPlayer.stopSound();
+		}
+		MidiPlayer.playNote(midiNoteSequence[midinote]+12);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MidiPlayer.stopSound();
+	}
 
 	public void search(ActionEvent event) {
 		listView.getItems().clear();
 		listView.getItems().addAll(searchList(searchBar.getText(), scaleNames));
 	}
 
-	private List<String> searchList(String searchWords, List<String> listOfStrings) {
+	public static List<String> searchList(String searchWords, List<String> listOfStrings) {
 		Map<String,Integer> wordsMap = new HashMap<String,Integer>();
 		for(String listWord:listOfStrings) {
 			int similarity = levenshteinDistance(listWord.toLowerCase(), searchWords.toLowerCase());
@@ -179,10 +180,5 @@ public class ScaleSearch extends Pane{
 	    return dp[m][n];
 	}
 
-
-	public String binarySearch() {
-		return null;
-		
-	}
 	
 }

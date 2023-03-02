@@ -39,17 +39,29 @@ public class ChordFingeringButtons extends Pane{
 		noteHBox.setId("noteHBox");
 		noteGroup = new ToggleGroup();
 		ANote = new ToggleButton("A");
+		ANote.setUserData("A");
 		ASharpNote = new ToggleButton("A#");
+		ASharpNote.setUserData("Bb");
 		BNote = new ToggleButton("B");
+		BNote.setUserData("B");
 		CNote = new ToggleButton("C");
+		CNote.setUserData("C");
 		CSharpNote = new ToggleButton("C#");
+		CSharpNote.setUserData("Csharp");
 		DNote = new ToggleButton("D");
+		DNote.setUserData("D");
 		DSharpNote = new ToggleButton("D#");
+		DSharpNote.setUserData("Eb");
 		ENote = new ToggleButton("E");
+		ENote.setUserData("E");
 		FNote = new ToggleButton("F");
+		FNote.setUserData("F");
 		FSharpNote = new ToggleButton("F#");
+		FSharpNote.setUserData("Fsharp");
 		GNote = new ToggleButton("G");
+		GNote.setUserData("G");
 		GSharpNote = new ToggleButton("G#");
+		GSharpNote.setUserData("Ab");
 		
 		ANote.setToggleGroup(noteGroup);
 		ASharpNote.setToggleGroup(noteGroup);
@@ -68,9 +80,8 @@ public class ChordFingeringButtons extends Pane{
 		    public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
 		    	ToggleButton selectedNote = (ToggleButton) noteGroup.getSelectedToggle();
 		    	if(selectedNote!=null) {
-//		    		ScaleFretboard.setCurrentNote(selectedNote.getText());
-//		    		ScaleFretboard.updateNotes();
-		    		ChordFingeringFretboard.setCurrChordNote(selectedNote.getText());
+
+		    		ChordFingeringFretboard.setCurrChordNote((String) selectedNote.getUserData());
 		    		ChordFingeringFretboard.updateNotes();
 		    	}
 		     } 
@@ -81,9 +92,9 @@ public class ChordFingeringButtons extends Pane{
 		
 		chordGroup = new ToggleGroup();
 		RadioButton major = new RadioButton("Major");
-		major.setUserData("maj");
+		major.setUserData("major");
 		RadioButton minor = new RadioButton("Minor");
-		minor.setUserData("m");
+		minor.setUserData("minor");
 		RadioButton major7 = new RadioButton("Major 7");
 		major7.setUserData("maj7");
 		RadioButton minor7 = new RadioButton("Minor 7");

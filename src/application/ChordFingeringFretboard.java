@@ -2,6 +2,7 @@ package application;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -9,7 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
-public class ChordFingeringFretboard extends Pane{
+public class ChordFingeringFretboard extends Pane {
 	private static RadioButton[] highE;
 	private static RadioButton[] B;
 	private static RadioButton[] G;
@@ -21,20 +22,23 @@ public class ChordFingeringFretboard extends Pane{
 	private static String currChordType;
 	private static ArrayList<int[]> possibleFingering;
 	private static int currentPos;
+	private static FretPosJSONReader fingerReader;
+
 	public ChordFingeringFretboard() {
+		
 		String css = this.getClass().getResource("fretboard.css").toExternalForm();
 		this.getStylesheets().add(css);
 		currChordNote = null;
 		currChordType = null;
-		setCurrChordNote("A");
-		setCurrChordType("maj");
 		chordsList = ChordLibrary.list;
+		fingerReader = new FretPosJSONReader();
 		createFretboard();
 		updateNotes();
 	}
+
 	public void createFretboard() {
 		possibleFingering = new ArrayList<int[]>();
-		currentPos=0;
+		currentPos = 0;
 		for (int i = 0; i < 6; i++) {
 			Line line1 = new Line(50, 20 + (i * 40), 800.0, 20 + (i * 40));
 			line1.setId("stringline" + (i + 1));
@@ -97,8 +101,6 @@ public class ChordFingeringFretboard extends Pane{
 		RadioButton highE14 = new RadioButton("F#");
 		RadioButton highE15 = new RadioButton("G");
 
-		
-
 		highE0.setUserData(new Note("E", 64, 3, 0));
 		highE1.setUserData(new Note("F", 65, 3, 1));
 		highE2.setUserData(new Note("F#", 66, 3, 2));
@@ -153,8 +155,6 @@ public class ChordFingeringFretboard extends Pane{
 		highE15.setLayoutX(755);
 		highE15.setLayoutY(5);
 
-
-
 		RadioButton B0 = new RadioButton("B");
 		RadioButton B1 = new RadioButton("C");
 		RadioButton B2 = new RadioButton("C#");
@@ -171,7 +171,6 @@ public class ChordFingeringFretboard extends Pane{
 		RadioButton B13 = new RadioButton("C");
 		RadioButton B14 = new RadioButton("C#");
 		RadioButton B15 = new RadioButton("D");
-
 
 		B0.setUserData(new Note("B", 59, 2, 0));
 		B1.setUserData(new Note("C", 60, 3, 1));
@@ -223,8 +222,6 @@ public class ChordFingeringFretboard extends Pane{
 		B15.setLayoutX(755);
 		B15.setLayoutY(45);
 
-	
-
 		RadioButton G0 = new RadioButton("G");
 		RadioButton G1 = new RadioButton("G#");
 		RadioButton G2 = new RadioButton("A");
@@ -241,8 +238,6 @@ public class ChordFingeringFretboard extends Pane{
 		RadioButton G13 = new RadioButton("G#");
 		RadioButton G14 = new RadioButton("A");
 		RadioButton G15 = new RadioButton("A#");
-
-
 
 		G0.setUserData(new Note("G", 55, 2, 0));
 		G1.setUserData(new Note("G#", 56, 2, 1));
@@ -294,9 +289,6 @@ public class ChordFingeringFretboard extends Pane{
 		G15.setLayoutX(755);
 		G15.setLayoutY(85);
 
-		
-
-
 		RadioButton D0 = new RadioButton("D");
 		RadioButton D1 = new RadioButton("D#");
 		RadioButton D2 = new RadioButton("E");
@@ -313,8 +305,6 @@ public class ChordFingeringFretboard extends Pane{
 		RadioButton D13 = new RadioButton("D#");
 		RadioButton D14 = new RadioButton("E");
 		RadioButton D15 = new RadioButton("F");
-
-
 
 		D0.setUserData(new Note("D", 50, 2, 0));
 		D1.setUserData(new Note("D#", 51, 2, 1));
@@ -366,9 +356,6 @@ public class ChordFingeringFretboard extends Pane{
 		D15.setLayoutX(755);
 		D15.setLayoutY(125);
 
-	
-
-
 		RadioButton A0 = new RadioButton("A");
 		RadioButton A1 = new RadioButton("A#");
 		RadioButton A2 = new RadioButton("B");
@@ -386,7 +373,6 @@ public class ChordFingeringFretboard extends Pane{
 		RadioButton A14 = new RadioButton("B");
 		RadioButton A15 = new RadioButton("C");
 
-
 		A0.setUserData(new Note("A", 45, 1, 0));
 		A1.setUserData(new Note("A#", 46, 1, 1));
 		A2.setUserData(new Note("B", 47, 1, 2));
@@ -394,7 +380,7 @@ public class ChordFingeringFretboard extends Pane{
 		A4.setUserData(new Note("C#", 49, 2, 4));
 		A5.setUserData(new Note("D", 50, 2, 5));
 		A6.setUserData(new Note("D#", 51, 2, 6));
-		A7.setUserData(new Note("E", 52, 2,7));
+		A7.setUserData(new Note("E", 52, 2, 7));
 		A8.setUserData(new Note("F", 53, 2, 8));
 		A9.setUserData(new Note("F#", 54, 2, 9));
 		A10.setUserData(new Note("G", 55, 2, 10));
@@ -436,8 +422,6 @@ public class ChordFingeringFretboard extends Pane{
 		A14.setLayoutY(165);
 		A15.setLayoutX(755);
 		A15.setLayoutY(165);
-
-	
 
 		RadioButton lowE0 = new RadioButton("E");
 		RadioButton lowE1 = new RadioButton("F");
@@ -505,14 +489,14 @@ public class ChordFingeringFretboard extends Pane{
 		lowE14.setLayoutY(205);
 		lowE15.setLayoutX(755);
 		lowE15.setLayoutY(205);
-		
+
 		highE = new RadioButton[16];
 		B = new RadioButton[16];
 		G = new RadioButton[16];
 		D = new RadioButton[16];
 		A = new RadioButton[16];
 		lowE = new RadioButton[16];
-		
+
 		highE[0] = highE0;
 		highE[1] = highE1;
 		highE[2] = highE2;
@@ -529,7 +513,7 @@ public class ChordFingeringFretboard extends Pane{
 		highE[13] = highE13;
 		highE[14] = highE14;
 		highE[15] = highE15;
-		
+
 		B[0] = B0;
 		B[1] = B1;
 		B[2] = B2;
@@ -546,7 +530,7 @@ public class ChordFingeringFretboard extends Pane{
 		B[13] = B13;
 		B[14] = B14;
 		B[15] = B15;
-		
+
 		G[0] = G0;
 		G[1] = G1;
 		G[2] = G2;
@@ -563,7 +547,7 @@ public class ChordFingeringFretboard extends Pane{
 		G[13] = G13;
 		G[14] = G14;
 		G[15] = G15;
-		
+
 		D[0] = D0;
 		D[1] = D1;
 		D[2] = D2;
@@ -580,7 +564,7 @@ public class ChordFingeringFretboard extends Pane{
 		D[13] = D13;
 		D[14] = D14;
 		D[15] = D15;
-		
+
 		A[0] = A0;
 		A[1] = A1;
 		A[2] = A2;
@@ -597,7 +581,7 @@ public class ChordFingeringFretboard extends Pane{
 		A[13] = A13;
 		A[14] = A14;
 		A[15] = A15;
-		
+
 		lowE[0] = lowE0;
 		lowE[1] = lowE1;
 		lowE[2] = lowE2;
@@ -614,99 +598,196 @@ public class ChordFingeringFretboard extends Pane{
 		lowE[13] = lowE13;
 		lowE[14] = lowE14;
 		lowE[15] = lowE15;
-		
-		
-		
+
 		this.getChildren().addAll(circle3, circle5, circle7, circle9, circle12A, circle12B, circle15, highE0, highE1,
 				highE2, highE3, highE4, highE5, highE6, highE7, highE8, highE9, highE10, highE11, highE12, highE13,
 				highE14, highE15, B0, B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11, B12, B13, B14, B15, G0, G1, G2, G3,
 				G4, G5, G6, G7, G8, G9, G10, G11, G12, G13, G14, G15, D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11,
 				D12, D13, D14, D15, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, lowE0, lowE1,
-				lowE2, lowE3, lowE4, lowE5, lowE6, lowE7, lowE8, lowE9, lowE10, lowE11, lowE12, lowE13, lowE14, lowE15
-				);
+				lowE2, lowE3, lowE4, lowE5, lowE6, lowE7, lowE8, lowE9, lowE10, lowE11, lowE12, lowE13, lowE14, lowE15);
 
 	}
-	
+	public static void playChord(int[] frets) {
+		if(frets[0]!=-1) {
+			MidiPlayer.playNote(((Note)lowE[frets[0]].getUserData()).getMidiNoteNumber());
+			
+		}
+		if(frets[1]!=-1) {
+			MidiPlayer.playNote(((Note)A[frets[1]].getUserData()).getMidiNoteNumber());
+		}
+		if(frets[2]!=-1) {
+			MidiPlayer.playNote(((Note)D[frets[2]].getUserData()).getMidiNoteNumber());
+			
+		}
+		if(frets[3]!=-1) {
+			MidiPlayer.playNote(((Note)G[frets[3]].getUserData()).getMidiNoteNumber());
+			
+		}
+		if(frets[4]!=-1) {
+			MidiPlayer.playNote(((Note)B[frets[4]].getUserData()).getMidiNoteNumber());
+			
+		}
+		if(frets[5]!=-1) {
+			MidiPlayer.playNote(((Note)highE[frets[5]].getUserData()).getMidiNoteNumber());
+			
+		}
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		MidiPlayer.stopSound();
+	}
+	public static void playArpeggio(int[] frets) {
+		if(frets[0]!=-1) {
+			MidiPlayer.playNote(((Note)lowE[frets[0]].getUserData()).getMidiNoteNumber());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(frets[1]!=-1) {
+			MidiPlayer.playNote(((Note)A[frets[1]].getUserData()).getMidiNoteNumber());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(frets[2]!=-1) {
+			MidiPlayer.playNote(((Note)D[frets[2]].getUserData()).getMidiNoteNumber());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(frets[3]!=-1) {
+			MidiPlayer.playNote(((Note)G[frets[3]].getUserData()).getMidiNoteNumber());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(frets[4]!=-1) {
+			MidiPlayer.playNote(((Note)B[frets[4]].getUserData()).getMidiNoteNumber());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(frets[5]!=-1) {
+			MidiPlayer.playNote(((Note)highE[frets[5]].getUserData()).getMidiNoteNumber());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		MidiPlayer.stopSound();
+	}
 	public static void nextVariation() {
-		if(currentPos<possibleFingering.size()-1) {
+		if (currentPos < possibleFingering.size() - 1) {
 			currentPos++;
 		}
 		fireNotes();
 	}
+
 	public static void prevVariation() {
-		if(currentPos>0) {
+		if (currentPos > 0) {
 			currentPos--;
 		}
 		fireNotes();
 	}
-	
+
 	public static String getCurrChordNote() {
 		return currChordNote;
 	}
+
 	public static void setCurrChordNote(String currChordNote) {
 		ChordFingeringFretboard.currChordNote = currChordNote;
 	}
+
 	public static String getCurrChordType() {
 		return currChordType;
 	}
+
 	public static void setCurrChordType(String currChordType) {
 		ChordFingeringFretboard.currChordType = currChordType;
 	}
 	public static void clearFretboard() {
-		for(RadioButton noteButton:highE) {
-			noteButton.setSelected(false);;
+		for (RadioButton noteButton : highE) {
+			noteButton.setSelected(false);
+			
 		}
-		for(RadioButton noteButton:lowE) {
-			noteButton.setSelected(false);;
+		for (RadioButton noteButton : lowE) {
+			noteButton.setSelected(false);
+			
 		}
-		for(RadioButton noteButton:A) {
-			noteButton.setSelected(false);;
+		for (RadioButton noteButton : A) {
+			noteButton.setSelected(false);
+			
 		}
-		for(RadioButton noteButton:G) {
-			noteButton.setSelected(false);;
+		for (RadioButton noteButton : G) {
+			noteButton.setSelected(false);
+			
 		}
-		for(RadioButton noteButton:B) {
-			noteButton.setSelected(false);;
+		for (RadioButton noteButton : B) {
+			noteButton.setSelected(false);
+			
 		}
-		for(RadioButton noteButton:D) {
-			noteButton.setSelected(false);;
+		for (RadioButton noteButton : D) {
+			noteButton.setSelected(false);
+			
 		}
 	}
+
 	public static void updateNotes() {
+		currentPos = 0;
 		clearFretboard();
 		possibleFingering.clear();
-		if(currChordNote!=null&&currChordType!=null) {
-			for(Chord chord : chordsList) {
-				if(chord.getName().equals(currChordNote+currChordType)) {
-					int[] fingering = chord.getFingerPos();
-					possibleFingering.add(fingering);
-					
-				}
-				
-			}
+		if (currChordNote != null && currChordType != null) {
+			possibleFingering = FretPosJSONReader.findChordFingering(currChordNote, currChordType);
 		}
 		fireNotes();
 	}
+	public static int[] getCurrentNotes() {
+		return possibleFingering.get(currentPos);
+	}
 	public static void fireNotes() {
 		clearFretboard();
-		int[] fingering = possibleFingering.get(currentPos);
-		if(fingering[0]!=-1) {
-			lowE[fingering[0]].fire();
-		}
-		if(fingering[1]!=-1) {
-			A[fingering[1]].fire();
-		}
-		if(fingering[2]!=-1) {
-			D[fingering[2]].fire();
-		}
-		if(fingering[3]!=-1) {
-			G[fingering[3]].fire();
-		}
-		if(fingering[4]!=-1) {
-			B[fingering[4]].fire();
-		}
-		if(fingering[5]!=-1) {
-			highE[fingering[5]].fire();
+		if (currChordNote != null && currChordType != null && possibleFingering.size() != 0) {
+
+			int[] fingering = possibleFingering.get(currentPos);
+			if (fingering[0] != -1) {
+				lowE[fingering[0]].fire();
+			}
+			if (fingering[1] != -1) {
+				A[fingering[1]].fire();
+			}
+			if (fingering[2] != -1) {
+				D[fingering[2]].fire();
+			}
+			if (fingering[3] != -1) {
+				G[fingering[3]].fire();
+			}
+			if (fingering[4] != -1) {
+				B[fingering[4]].fire();
+			}
+			if (fingering[5] != -1) {
+				highE[fingering[5]].fire();
+			}
 		}
 	}
 }
