@@ -26,7 +26,7 @@ public class ScaleButtons extends Pane{
 	private ToggleButton FSharpNote;
 	private ToggleButton GNote;
 	private ToggleButton GSharpNote;
-	private ToggleGroup noteGroup;
+	private static ToggleGroup noteGroup;
 	private static Label currentNoteScale;
 	private static ToggleGroup scaleGroup;
 	public ScaleButtons() {
@@ -148,6 +148,9 @@ public class ScaleButtons extends Pane{
 	
 	public static void clearScaleGroup() {
 		ScaleButtons.scaleGroup.selectToggle(null);;
+	}
+	public static void clearNoteGroup() {
+		ScaleButtons.noteGroup.selectToggle(null);;
 	}
 	
 }

@@ -1,5 +1,7 @@
 package application;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +12,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -26,19 +32,47 @@ public class ChordFingeringSearch extends Pane{
 	private ListView<String> listView;
 	private List<String> chordList;
 	public ChordFingeringSearch() {
-		HBox nextPrevBox = new HBox(6);
+		String css = this.getClass().getResource("chordLibraryButtons.css").toExternalForm();
+		this.getStylesheets().add(css);
+		
+	    Image soundImg = null;
+		try {
+			soundImg = new Image(new FileInputStream("data/soundButton.png"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		GridPane buttonGrid = new GridPane();
 		Button next = new Button(">");
 		Button prev = new Button("<");
 		searchBar = new TextField();
 		searchButton = new Button("Search");
-		playArpeggioButton = new Button("Play");
-		playChordButton = new Button("Play");
+		playArpeggioButton = new Button("Arpeggio", new ImageView(soundImg));
+		playArpeggioButton.setContentDisplay(ContentDisplay.TOP);
+		playChordButton = new Button("Chord", new ImageView(soundImg));
+		playChordButton.setContentDisplay(ContentDisplay.TOP);
 		writeChord = new Button("Write Chord");
 		clearFile = new Button("Clear File");
+		prev.setId("gridButton");
+		next.setId("gridButton");
+		playArpeggioButton.setId("gridButton");
+		playChordButton.setId("gridButton");
+		writeChord.setId("gridButton");
+		clearFile.setId("gridButton");
+		
+		buttonGrid.add(prev, 0, 0, 1, 1);
+		buttonGrid.add(next, 1, 0, 1, 1);
+		buttonGrid.add(playArpeggioButton, 0, 1, 1, 1);
+		buttonGrid.add(playChordButton, 1, 1, 1, 1);
+		buttonGrid.add(writeChord, 0, 2, 1, 1);
+		buttonGrid.add(clearFile, 1, 2, 1, 1);
+		buttonGrid.setHgap(10);
+		buttonGrid.setVgap(10);
 		chordList = FretPosJSONReader.getChordTypeList();
 		ObservableList<String> chordObservableList = FXCollections.observableArrayList(chordList);
 		listView = new ListView<String>(chordObservableList);
-		listView.setMaxSize(200, 160);
+		listView.setMaxSize(210, 300);
 		searchBar = new TextField();
 		searchButton.setOnAction(new EventHandler<ActionEvent>() {
 			 
@@ -69,7 +103,9 @@ public class ChordFingeringSearch extends Pane{
 			 
 		    @Override
 		    public void handle(ActionEvent event) {
-		    	ChordFingeringFretboard.playArpeggio(ChordFingeringFretboard.getCurrentNotes());
+		    	if(ChordFingeringFretboard.getCurrChordNote()!=null&&ChordFingeringFretboard.getCurrChordType()!=null&&ChordFingeringFretboard.getCurrentNotes()!=null) {
+		    		ChordFingeringFretboard.playArpeggio(ChordFingeringFretboard.getCurrentNotes());
+		    	}
 		    }
 
 		});
@@ -78,7 +114,9 @@ public class ChordFingeringSearch extends Pane{
 			 
 		    @Override
 		    public void handle(ActionEvent event) {
-		    	ChordFingeringFretboard.playChord(ChordFingeringFretboard.getCurrentNotes());
+		    	if(ChordFingeringFretboard.getCurrChordNote()!=null&&ChordFingeringFretboard.getCurrChordType()!=null&&ChordFingeringFretboard.getCurrentNotes()!=null) {
+		    		ChordFingeringFretboard.playChord(ChordFingeringFretboard.getCurrentNotes());
+		    	}
 		    }
 
 		});
@@ -112,19 +150,21 @@ public class ChordFingeringSearch extends Pane{
 		    		ChordFingeringFretboard.setCurrChordType(newValue);
 		    		ChordFingeringFretboard.updateNotes();
 		    		ChordFingeringButtons.updateText();
+		    		ChordFingeringButtons.clearSelection();
 		    	}
 		    }
 		});
 		HBox searchHBox = new HBox(2);
 		VBox searchVBox = new VBox(3);
 		searchHBox.getChildren().addAll(searchBar, searchButton);
-		nextPrevBox.getChildren().addAll(prev,next,playArpeggioButton,playChordButton,writeChord,clearFile);
-		searchVBox.getChildren().addAll(searchHBox, listView, nextPrevBox);
+		
+		searchVBox.getChildren().addAll(searchHBox, listView, buttonGrid);
 		this.getChildren().addAll(searchVBox);
 	}
 	public void search(ActionEvent event) {
 		listView.getItems().clear();
 		listView.getItems().addAll(ScaleSearch.searchList(searchBar.getText(), chordList));
 	}
+	
 	
 }

@@ -37,10 +37,22 @@
     -fx-font-weight: bold;
     -fx-text-fill: white;
 }
-#possibleChordsCss{
+#possibleChordsLabel{
 	-fx-font-size: 40px;
     -fx-font-weight: bold;
     -fx-text-fill: white;
+}
+
+#possibleChordsCss{
+	-fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-text-fill: green;
+    -fx-border-color: red;
+    -fx-border-radius: 5px;
+    -fx-border: 5px;
+    -fx-background-color: white;
+    -fx-padding: 10px;
+    -fx-margins: 10px;
 }
 
 .toggle-button{
@@ -100,6 +112,16 @@
 	-fx-fill: #FFFFFF;
 	-fx-arc-height: 20px;
 	-fx-arc-width: 20px;
+}
+
+#chordNameRect{
+	-fx-fill: white;
+	-fx-arc-height: 20px;
+	-fx-arc-width: 20px;
+}
+#flowPane{
+	-fx-padding: 10px;
+	-fx-margin: 10px;
 }
 
 Fretboard{

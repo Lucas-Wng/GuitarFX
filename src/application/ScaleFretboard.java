@@ -615,12 +615,13 @@ public class ScaleFretboard extends Pane{
 
 	}
 
-	public static void updateNotes() { // change
+	public static void updateNotes() { 
 		for(int i=0;i<buttonList.size();i++) {
 			buttonList.get(i).setSelected(false);
 		}
-		ScaleButtons.setCurrentNoteScaleText(currentNote+currentScale);
+		
 		if(currentScale!=null&&currentNote!=null) {
+			ScaleButtons.setCurrentNoteScaleText(currentNote+currentScale);
 			int[] intervals = scaleMap.get(currentScale);
 			if(intervals!=null) {
 				Note[] scaleNotes = generateScales(currentNote,intervals);

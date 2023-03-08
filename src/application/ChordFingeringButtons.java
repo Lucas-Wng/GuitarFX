@@ -166,4 +166,7 @@ public class ChordFingeringButtons extends Pane{
 	public static void updateText() {
 		currentNoteChord.setText(ChordFingeringFretboard.getCurrChordNote()+ChordFingeringFretboard.getCurrChordType());
 	}
+	public static void clearSelection() {
+		chordGroup.selectToggle(null);
+	}
 }

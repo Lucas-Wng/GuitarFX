@@ -1,0 +1,7 @@
+#gridButton{
+	-fx-pref-width: 100px;
+	-fx-pref-height: 50px;
+}
+#rootVBox{
+	-fx-padding: 0px 100px 0px 100px;
+}

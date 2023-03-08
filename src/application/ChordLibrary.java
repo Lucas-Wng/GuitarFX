@@ -12,14 +12,13 @@ import java.util.Scanner;
 
 public class ChordLibrary {
 	static ArrayList<Chord> list = new ArrayList<Chord>();
+	static ArrayList<String> possibleChords = new ArrayList<String>();
 	public ChordLibrary() {
 		loadData();
 	}
-	public String findChord(String[] userChord) {
-		boolean found = false;
-		String chordName = "";
+	public ArrayList<String> findChord(String[] userChord) {
 		String[] cleanedArray = Arrays.stream(userChord).filter(Objects::nonNull).distinct().toArray(String[]::new);
-		
+		possibleChords.clear();
 		for(int i=0;i<list.size();i++) {
 			
 			Note[] arrNoteObj = list.get(i).getNotes();
@@ -32,14 +31,11 @@ public class ChordLibrary {
 			insertionSort(cleanedArray);
 			insertionSort(stringNote);
 			if(Arrays.equals(stringNote, cleanedArray)) {
-				found = true;
-				chordName += list.get(i).getName() + " ";
+				possibleChords.add(list.get(i).getName());
 			}
 		}
-		if(!found) {
-			return "Not found";
-		}
-		return chordName;
+		return possibleChords;
+		
 	}
 	public static void insertionSort(String[] arr) {
 		for(int i=1;i<arr.length;++i) {

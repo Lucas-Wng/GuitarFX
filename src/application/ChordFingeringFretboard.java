@@ -617,94 +617,99 @@ public class ChordFingeringFretboard extends Pane {
 
 	}
 	public static void playChord(int[] frets) {
-		if(frets[0]!=-1) {
-			MidiPlayer.playNote(((Note)lowE[frets[0]].getUserData()).getMidiNoteNumber());
-			
-		}
-		if(frets[1]!=-1) {
-			MidiPlayer.playNote(((Note)A[frets[1]].getUserData()).getMidiNoteNumber());
-		}
-		if(frets[2]!=-1) {
-			MidiPlayer.playNote(((Note)D[frets[2]].getUserData()).getMidiNoteNumber());
-			
-		}
-		if(frets[3]!=-1) {
-			MidiPlayer.playNote(((Note)G[frets[3]].getUserData()).getMidiNoteNumber());
-			
-		}
-		if(frets[4]!=-1) {
-			MidiPlayer.playNote(((Note)B[frets[4]].getUserData()).getMidiNoteNumber());
-			
-		}
-		if(frets[5]!=-1) {
-			MidiPlayer.playNote(((Note)highE[frets[5]].getUserData()).getMidiNoteNumber());
-			
-		}
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if(currChordNote != null && currChordType != null && possibleFingering.size() != 0) {
+			if(frets[0]!=-1) {
+				MidiPlayer.playNote(((Note)lowE[frets[0]].getUserData()).getMidiNoteNumber());
+				
+			}
+			if(frets[1]!=-1) {
+				MidiPlayer.playNote(((Note)A[frets[1]].getUserData()).getMidiNoteNumber());
+			}
+			if(frets[2]!=-1) {
+				MidiPlayer.playNote(((Note)D[frets[2]].getUserData()).getMidiNoteNumber());
+				
+			}
+			if(frets[3]!=-1) {
+				MidiPlayer.playNote(((Note)G[frets[3]].getUserData()).getMidiNoteNumber());
+				
+			}
+			if(frets[4]!=-1) {
+				MidiPlayer.playNote(((Note)B[frets[4]].getUserData()).getMidiNoteNumber());
+				
+			}
+			if(frets[5]!=-1) {
+				MidiPlayer.playNote(((Note)highE[frets[5]].getUserData()).getMidiNoteNumber());
+				
+			}
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-		MidiPlayer.stopSound();
+			MidiPlayer.stopSound();
+		}
+		
 	}
 	public static void playArpeggio(int[] frets) {
-		if(frets[0]!=-1) {
-			MidiPlayer.playNote(((Note)lowE[frets[0]].getUserData()).getMidiNoteNumber());
-			try {
-				Thread.sleep(600);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if(currChordNote != null && currChordType != null && possibleFingering.size() != 0) {
+			if(frets[0]!=-1) {
+				MidiPlayer.playNote(((Note)lowE[frets[0]].getUserData()).getMidiNoteNumber());
+				try {
+					Thread.sleep(600);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
-		if(frets[1]!=-1) {
-			MidiPlayer.playNote(((Note)A[frets[1]].getUserData()).getMidiNoteNumber());
-			try {
-				Thread.sleep(600);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(frets[1]!=-1) {
+				MidiPlayer.playNote(((Note)A[frets[1]].getUserData()).getMidiNoteNumber());
+				try {
+					Thread.sleep(600);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
-		if(frets[2]!=-1) {
-			MidiPlayer.playNote(((Note)D[frets[2]].getUserData()).getMidiNoteNumber());
-			try {
-				Thread.sleep(600);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(frets[2]!=-1) {
+				MidiPlayer.playNote(((Note)D[frets[2]].getUserData()).getMidiNoteNumber());
+				try {
+					Thread.sleep(600);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
-		if(frets[3]!=-1) {
-			MidiPlayer.playNote(((Note)G[frets[3]].getUserData()).getMidiNoteNumber());
-			try {
-				Thread.sleep(600);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(frets[3]!=-1) {
+				MidiPlayer.playNote(((Note)G[frets[3]].getUserData()).getMidiNoteNumber());
+				try {
+					Thread.sleep(600);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
-		if(frets[4]!=-1) {
-			MidiPlayer.playNote(((Note)B[frets[4]].getUserData()).getMidiNoteNumber());
-			try {
-				Thread.sleep(600);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(frets[4]!=-1) {
+				MidiPlayer.playNote(((Note)B[frets[4]].getUserData()).getMidiNoteNumber());
+				try {
+					Thread.sleep(600);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
-		if(frets[5]!=-1) {
-			MidiPlayer.playNote(((Note)highE[frets[5]].getUserData()).getMidiNoteNumber());
-			try {
-				Thread.sleep(600);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(frets[5]!=-1) {
+				MidiPlayer.playNote(((Note)highE[frets[5]].getUserData()).getMidiNoteNumber());
+				try {
+					Thread.sleep(600);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			MidiPlayer.stopSound();
 		}
-		MidiPlayer.stopSound();
 	}
 	public static void nextVariation() {
 		if (currentPos < possibleFingering.size() - 1) {

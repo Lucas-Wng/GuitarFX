@@ -2,6 +2,8 @@ package application;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -12,13 +14,15 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 public class Fretboard extends Pane {
-	private String[] userNotes;
+	private static String[] userNotes;
 	private static ToggleGroup highE;
 	private static ToggleGroup A;
 	private static ToggleGroup D;
@@ -37,12 +41,13 @@ public class Fretboard extends Pane {
 	private static ImageView sharpB;
 	private static ImageView wholeViewlowE;
 	private static ImageView sharplowE;
+	private static FlowPane possibleChordsLabel;
 	final private static String[] noteSequenceSharp = { "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G",
 			"G#" };
 	final private static String[] noteSequenceFlat = { "A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G",
 			"Ab" };
 	private static MidiPlayer midiplayer;
-
+	private static ArrayList<String> possibleChordsList;
 	public Fretboard() {
 		String css = this.getClass().getResource("fretboard.css").toExternalForm();
 		this.getStylesheets().add(css);
@@ -53,10 +58,19 @@ public class Fretboard extends Pane {
 	}
 
 	public void createFretboard() {
+		Rectangle chordNameRect = new Rectangle(50,330,500,200);
+		chordNameRect.setId("chordNameRect");
+		possibleChordsLabel = new FlowPane();
+		possibleChordsLabel.setHgap(5);
+		possibleChordsLabel.setVgap(5);
+		possibleChordsLabel.relocate(50, 330);
+		possibleChordsLabel.setPrefWrapLength(500);
+		possibleChordsLabel.setId("flowPane");
 		userNotes = new String[6];
+		possibleChordsList = new ArrayList<String>();
 		Label possibleChords = new Label("");
 		Label possibleChordsHeading = new Label("Possible Chords");
-		Rectangle staffRectangle = new Rectangle(20, 480, 170, 140);
+		Rectangle staffRectangle = new Rectangle(600, 330, 170, 140);
 		staffRectangle.setId("staffRectangle");
 		this.getChildren().add(staffRectangle);
 		Image trebleclef = null;
@@ -73,14 +87,14 @@ public class Fretboard extends Pane {
 		}
 		ImageView trebleView = new ImageView(trebleclef);
 
-		trebleView.setX(50);
-		trebleView.setY(500);
+		trebleView.setX(625);
+		trebleView.setY(355);
 		this.getChildren().add(trebleView);
 
 		possibleChords.relocate(50, 330);
 		possibleChords.setId("possibleChordsCss");
 		possibleChordsHeading.relocate(50, 250);
-		possibleChordsHeading.setId("possibleChordsCss");
+		possibleChordsHeading.setId("possibleChordsLabel");
 		ChordLibrary chordlibrary = new ChordLibrary();
 		for (int i = 0; i < 6; i++) {
 			Line line1 = new Line(50, 20 + (i * 40), 800.0, 20 + (i * 40));
@@ -218,12 +232,12 @@ public class Fretboard extends Pane {
 
 		wholeViewhighE = new ImageView(wholeNote);
 		wholeViewhighE.setVisible(false);
-		wholeViewhighE.setX(110);
+		wholeViewhighE.setX(700);
 		this.getChildren().add(wholeViewhighE);
 
 		sharphighE = new ImageView(sharpSymbol);
 		sharphighE.setVisible(false);
-		sharphighE.setX(95);
+		sharphighE.setX(685);
 		this.getChildren().add(sharphighE);
 
 		highE.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -244,10 +258,9 @@ public class Fretboard extends Pane {
 				} else {
 					userNotes[5] = null;
 				}
-//				System.out.println(Arrays.toString(userNotes));
-//				System.out.println(chordlibrary.findChord(userNotes));
-				possibleChords.setText(chordlibrary.findChord(userNotes));
-
+				
+				possibleChordsList=chordlibrary.findChord(userNotes);
+				updateLabel();
 			}
 
 		});
@@ -339,12 +352,12 @@ public class Fretboard extends Pane {
 
 		wholeViewB = new ImageView(wholeNote);
 		wholeViewB.setVisible(false);
-		wholeViewB.setX(110);
+		wholeViewB.setX(700);
 		this.getChildren().add(wholeViewB);
 
 		sharpB = new ImageView(sharpSymbol);
 		sharpB.setVisible(false);
-		sharpB.setX(95);
+		sharpB.setX(685);
 		this.getChildren().add(sharpB);
 
 		B.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -367,7 +380,9 @@ public class Fretboard extends Pane {
 				}
 //				System.out.println(Arrays.toString(userNotes));
 //				System.out.println(chordlibrary.findChord(userNotes));
-				possibleChords.setText(chordlibrary.findChord(userNotes));
+				
+				possibleChordsList=chordlibrary.findChord(userNotes);
+				updateLabel();
 
 			}
 
@@ -460,12 +475,12 @@ public class Fretboard extends Pane {
 
 		wholeViewG = new ImageView(wholeNote);
 		wholeViewG.setVisible(false);
-		wholeViewG.setX(110);
+		wholeViewG.setX(700);
 		this.getChildren().add(wholeViewG);
 
 		sharpG = new ImageView(sharpSymbol);
 		sharpG.setVisible(false);
-		sharpG.setX(95);
+		sharpG.setX(685);
 		this.getChildren().add(sharpG);
 
 		G.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -488,8 +503,9 @@ public class Fretboard extends Pane {
 				}
 //				System.out.println(Arrays.toString(userNotes));
 //				System.out.println(chordlibrary.findChord(userNotes));
-				possibleChords.setText(chordlibrary.findChord(userNotes));
-
+				
+				possibleChordsList=chordlibrary.findChord(userNotes);
+				updateLabel();
 			}
 
 		});
@@ -581,12 +597,12 @@ public class Fretboard extends Pane {
 
 		wholeViewD = new ImageView(wholeNote);
 		wholeViewD.setVisible(false);
-		wholeViewD.setX(110);
+		wholeViewD.setX(700);
 		this.getChildren().add(wholeViewD);
 
 		sharpD = new ImageView(sharpSymbol);
 		sharpD.setVisible(false);
-		sharpD.setX(95);
+		sharpD.setX(685);
 		this.getChildren().add(sharpD);
 
 		D.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -609,8 +625,9 @@ public class Fretboard extends Pane {
 				}
 //				System.out.println(Arrays.toString(userNotes));
 //				System.out.println(chordlibrary.findChord(userNotes));
-				possibleChords.setText(chordlibrary.findChord(userNotes));
-
+				
+				possibleChordsList=chordlibrary.findChord(userNotes);
+				updateLabel();
 			}
 
 		});
@@ -702,12 +719,12 @@ public class Fretboard extends Pane {
 
 		wholeViewA = new ImageView(wholeNote);
 		wholeViewA.setVisible(false);
-		wholeViewA.setX(110);
+		wholeViewA.setX(700);
 		this.getChildren().add(wholeViewA);
 
 		sharpA = new ImageView(sharpSymbol);
 		sharpA.setVisible(false);
-		sharpA.setX(95);
+		sharpA.setX(685);
 		this.getChildren().add(sharpA);
 
 		A.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -730,8 +747,9 @@ public class Fretboard extends Pane {
 				}
 //				System.out.println(Arrays.toString(userNotes));
 //				System.out.println(chordlibrary.findChord(userNotes));
-				possibleChords.setText(chordlibrary.findChord(userNotes));
-
+				
+				possibleChordsList=chordlibrary.findChord(userNotes);
+				updateLabel();
 			}
 
 		});
@@ -823,12 +841,12 @@ public class Fretboard extends Pane {
 
 		wholeViewlowE = new ImageView(wholeNote);
 		wholeViewlowE.setVisible(false);
-		wholeViewlowE.setX(110);
+		wholeViewlowE.setX(700);
 		this.getChildren().add(wholeViewlowE);
 
 		sharplowE = new ImageView(sharpSymbol);
 		sharplowE.setVisible(false);
-		sharplowE.setX(95);
+		sharplowE.setX(685);
 		this.getChildren().add(sharplowE);
 
 		lowE.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -851,8 +869,9 @@ public class Fretboard extends Pane {
 				}
 //				System.out.println(Arrays.toString(userNotes));
 //				System.out.println(chordlibrary.findChord(userNotes));
-				possibleChords.setText(chordlibrary.findChord(userNotes));
-
+				
+				possibleChordsList=chordlibrary.findChord(userNotes);
+				updateLabel();
 			}
 
 		});
@@ -863,10 +882,20 @@ public class Fretboard extends Pane {
 				G4, G5, G6, G7, G8, G9, G10, G11, G12, G13, G14, G15, D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11,
 				D12, D13, D14, D15, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, lowE0, lowE1,
 				lowE2, lowE3, lowE4, lowE5, lowE6, lowE7, lowE8, lowE9, lowE10, lowE11, lowE12, lowE13, lowE14, lowE15,
-				possibleChords, possibleChordsHeading);
+				chordNameRect,
+				possibleChordsLabel, possibleChordsHeading);
 
 	}
-
+	public void updateLabel() {
+		possibleChordsLabel.getChildren().clear();
+		possibleChordsList = (ArrayList<String>) possibleChordsList.stream().distinct().collect(Collectors.toList());
+		for(String chordName:possibleChordsList) {
+			Label chordLabel = new Label(chordName);
+			chordLabel.setId("possibleChordsCss");
+			possibleChordsLabel.getChildren().add(chordLabel);
+		}
+		
+	}
 	public void addNode(Node item) {
 		this.getChildren().add(item);
 	}
@@ -896,7 +925,7 @@ public class Fretboard extends Pane {
 		});
 
 	}
-
+	
 	public static String getOppositeAccidental(String name) {
 		if (name.length() != 1) {
 			int notePos = 0;
@@ -1005,7 +1034,7 @@ public class Fretboard extends Pane {
 		}
 		midiplayer.stopSound();
 	}
-
+	
 	public static void clearSelection() {
 		highE.selectToggle(null);
 		A.selectToggle(null);
@@ -1029,40 +1058,40 @@ public class Fretboard extends Pane {
 
 	public static double getStaffNotePos(String note) {
 		if (note.equals("A")) {
-			return 545;
+			return 345;
 		}
 		if (note.equals("A#")) {
-			return 545;
+			return 345;
 		}
 		if (note.equals("B")) {
-			return 536;
+			return 390;
 		}
 		if (note.equals("C")) {
-			return 527;
+			return 440;
 		}
 		if (note.equals("C#")) {
-			return 527;
+			return 440;
 		}
 		if (note.equals("D")) {
-			return 519;
+			return 373;
 		}
 		if (note.equals("D#")) {
-			return 519;
+			return 373;
 		}
 		if (note.equals("E")) {
-			return 511;
+			return 424;
 		}
 		if (note.equals("F")) {
-			return 561;
+			return 357;
 		}
 		if (note.equals("F#")) {
-			return 561;
+			return 357;
 		}
 		if (note.equals("G")) {
-			return 552;
+			return 408;
 		}
 		if (note.equals("G#")) {
-			return 552;
+			return 408;
 		}
 		return 0;
 	}
