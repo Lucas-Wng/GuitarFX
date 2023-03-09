@@ -16,7 +16,7 @@ public class ChordLibrary {
 	public ChordLibrary() {
 		loadData();
 	}
-	public ArrayList<String> findChord(String[] userChord) {
+	public static ArrayList<String> findChord(String[] userChord) {
 		String[] cleanedArray = Arrays.stream(userChord).filter(Objects::nonNull).distinct().toArray(String[]::new);
 		possibleChords.clear();
 		for(int i=0;i<list.size();i++) {

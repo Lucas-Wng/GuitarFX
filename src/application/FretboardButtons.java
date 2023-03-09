@@ -37,8 +37,8 @@ public class FretboardButtons extends GridPane{
 		Button chordSoundButton = new Button("Chord", new ImageView(soundImg));
 		chordSoundButton.setPrefSize(80, 80);
 		chordSoundButton.setContentDisplay(ContentDisplay.TOP);
-		Button button4 = new Button("Button 4");
-		Button button5 = new Button("Button 5");
+		Button randomButton = new Button("Random");
+		Button writeButton = new Button("Write");
 		Button button6 = new Button("Button 6");
 		
 		resetNotes.setOnAction(new EventHandler<ActionEvent>() {
@@ -74,12 +74,29 @@ public class FretboardButtons extends GridPane{
 		    }
 
 		});
+		randomButton.setOnAction(new EventHandler<ActionEvent>() {
+			 
+		    @Override
+		    public void handle(ActionEvent event) {
+		    	Fretboard.randomNotes();;
+		    }
+
+		});
+		
+		writeButton.setOnAction(new EventHandler<ActionEvent>() {
+			 
+		    @Override
+		    public void handle(ActionEvent event) {
+		    	Fretboard.writeChord();
+		    }
+
+		});
 		
 		this.add(resetNotes, 0, 0, 1, 1);
 		this.add(switchEnharmonic, 1, 0, 1, 1);
 		this.add(arpeggioSoundButton, 2, 0, 1, 1);
-		this.add(button4, 0, 1, 1, 1);
-		this.add(button5, 1, 1, 1, 1);
+		this.add(randomButton, 0, 1, 1, 1);
+		this.add(writeButton, 1, 1, 1, 1);
 		this.add(chordSoundButton, 2, 1, 1, 1);
 	}
 }

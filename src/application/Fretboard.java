@@ -29,6 +29,12 @@ public class Fretboard extends Pane {
 	private static ToggleGroup G;
 	private static ToggleGroup B;
 	private static ToggleGroup lowE;
+	private static ArrayList<ToggleButton> highEList;
+	private static ArrayList<ToggleButton> AList;
+	private static ArrayList<ToggleButton> DList;
+	private static ArrayList<ToggleButton> GList;
+	private static ArrayList<ToggleButton> BList;
+	private static ArrayList<ToggleButton> lowEList;
 	private static ImageView wholeViewhighE;
 	private static ImageView sharphighE;
 	private static ImageView wholeViewA;
@@ -70,7 +76,7 @@ public class Fretboard extends Pane {
 		possibleChordsList = new ArrayList<String>();
 		Label possibleChords = new Label("");
 		Label possibleChordsHeading = new Label("Possible Chords");
-		Rectangle staffRectangle = new Rectangle(600, 330, 170, 140);
+		Rectangle staffRectangle = new Rectangle(600, 330, 170, 200);
 		staffRectangle.setId("staffRectangle");
 		this.getChildren().add(staffRectangle);
 		Image trebleclef = null;
@@ -142,6 +148,7 @@ public class Fretboard extends Pane {
 		circle15.setId("noteCircle");
 
 		highE = new ToggleGroup();
+		
 		ToggleButton highE0 = new ToggleButton("E");
 		ToggleButton highE1 = new ToggleButton("F");
 		ToggleButton highE2 = new ToggleButton("F#");
@@ -175,6 +182,24 @@ public class Fretboard extends Pane {
 		highE13.setToggleGroup(highE);
 		highE14.setToggleGroup(highE);
 		highE15.setToggleGroup(highE);
+		
+		highEList = new ArrayList<ToggleButton>();
+		highEList.add(highE0);
+		highEList.add(highE1);
+		highEList.add(highE2);
+		highEList.add(highE3);
+		highEList.add(highE4);
+		highEList.add(highE5);
+		highEList.add(highE6);
+		highEList.add(highE7);
+		highEList.add(highE8);
+		highEList.add(highE9);
+		highEList.add(highE10);
+		highEList.add(highE11);
+		highEList.add(highE12);
+		highEList.add(highE13);
+		highEList.add(highE14);
+		highEList.add(highE15);
 
 		highE0.setUserData(new Note("E", 64, 3));
 		highE1.setUserData(new Note("F", 65, 3));
@@ -260,6 +285,7 @@ public class Fretboard extends Pane {
 				}
 				
 				possibleChordsList=chordlibrary.findChord(userNotes);
+				Piano.updatePiano(userNotes);
 				updateLabel();
 			}
 
@@ -299,7 +325,25 @@ public class Fretboard extends Pane {
 		B13.setToggleGroup(B);
 		B14.setToggleGroup(B);
 		B15.setToggleGroup(B);
-
+		
+		BList = new ArrayList<ToggleButton>();
+		BList.add(B0);
+		BList.add(B1);
+		BList.add(B2);
+		BList.add(B3);
+		BList.add(B4);
+		BList.add(B5);
+		BList.add(B6);
+		BList.add(B7);
+		BList.add(B8);
+		BList.add(B9);
+		BList.add(B10);
+		BList.add(B11);
+		BList.add(B12);
+		BList.add(B13);
+		BList.add(B14);
+		BList.add(B15);
+		
 		B0.setUserData(new Note("B", 59, 2));
 		B1.setUserData(new Note("C", 60, 3));
 		B2.setUserData(new Note("C#", 61, 3));
@@ -382,6 +426,7 @@ public class Fretboard extends Pane {
 //				System.out.println(chordlibrary.findChord(userNotes));
 				
 				possibleChordsList=chordlibrary.findChord(userNotes);
+				Piano.updatePiano(userNotes);
 				updateLabel();
 
 			}
@@ -439,7 +484,25 @@ public class Fretboard extends Pane {
 		G13.setUserData(new Note("G#", 68, 3));
 		G14.setUserData(new Note("A", 69, 3));
 		G15.setUserData(new Note("A#", 70, 3));
-
+		
+		GList = new ArrayList<ToggleButton>();
+		GList.add(G0);
+		GList.add(G1);
+		GList.add(G2);
+		GList.add(G3);
+		GList.add(G4);
+		GList.add(G5);
+		GList.add(G6);
+		GList.add(G7);
+		GList.add(G8);
+		GList.add(G9);
+		GList.add(G10);
+		GList.add(G11);
+		GList.add(G12);
+		GList.add(G13);
+		GList.add(G14);
+		GList.add(G15);
+		
 		G0.setLayoutX(5);
 		G0.setLayoutY(85);
 		G1.setLayoutX(55);
@@ -505,6 +568,7 @@ public class Fretboard extends Pane {
 //				System.out.println(chordlibrary.findChord(userNotes));
 				
 				possibleChordsList=chordlibrary.findChord(userNotes);
+				Piano.updatePiano(userNotes);
 				updateLabel();
 			}
 
@@ -561,7 +625,25 @@ public class Fretboard extends Pane {
 		D13.setUserData(new Note("D#", 63, 3));
 		D14.setUserData(new Note("E", 64, 3));
 		D15.setUserData(new Note("F", 65, 3));
-
+		
+		DList = new ArrayList<ToggleButton>();
+		DList.add(D0);
+		DList.add(D1);
+		DList.add(D2);
+		DList.add(D3);
+		DList.add(D4);
+		DList.add(D5);
+		DList.add(D6);
+		DList.add(D7);
+		DList.add(D8);
+		DList.add(D9);
+		DList.add(D10);
+		DList.add(D11);
+		DList.add(D12);
+		DList.add(D13);
+		DList.add(D14);
+		DList.add(D15);
+		
 		D0.setLayoutX(5);
 		D0.setLayoutY(125);
 		D1.setLayoutX(55);
@@ -627,6 +709,7 @@ public class Fretboard extends Pane {
 //				System.out.println(chordlibrary.findChord(userNotes));
 				
 				possibleChordsList=chordlibrary.findChord(userNotes);
+				Piano.updatePiano(userNotes);
 				updateLabel();
 			}
 
@@ -684,6 +767,24 @@ public class Fretboard extends Pane {
 		A14.setUserData(new Note("B", 59, 2));
 		A15.setUserData(new Note("C", 60, 3));
 
+		AList = new ArrayList<ToggleButton>();
+		AList.add(A0);
+		AList.add(A1);
+		AList.add(A2);
+		AList.add(A3);
+		AList.add(A4);
+		AList.add(A5);
+		AList.add(A6);
+		AList.add(A7);
+		AList.add(A8);
+		AList.add(A9);
+		AList.add(A10);
+		AList.add(A11);
+		AList.add(A12);
+		AList.add(A13);
+		AList.add(A14);
+		AList.add(A15);
+		
 		A0.setLayoutX(5);
 		A0.setLayoutY(165);
 		A1.setLayoutX(55);
@@ -749,6 +850,7 @@ public class Fretboard extends Pane {
 //				System.out.println(chordlibrary.findChord(userNotes));
 				
 				possibleChordsList=chordlibrary.findChord(userNotes);
+				Piano.updatePiano(userNotes);
 				updateLabel();
 			}
 
@@ -805,7 +907,25 @@ public class Fretboard extends Pane {
 		lowE13.setUserData(new Note("F", 53, 2));
 		lowE14.setUserData(new Note("F#", 54, 2));
 		lowE15.setUserData(new Note("G", 55, 2));
-
+		
+		lowEList = new ArrayList<ToggleButton>();
+		lowEList.add(lowE0);
+		lowEList.add(lowE1);
+		lowEList.add(lowE2);
+		lowEList.add(lowE3);
+		lowEList.add(lowE4);
+		lowEList.add(lowE5);
+		lowEList.add(lowE6);
+		lowEList.add(lowE7);
+		lowEList.add(lowE8);
+		lowEList.add(lowE9);
+		lowEList.add(lowE10);
+		lowEList.add(lowE11);
+		lowEList.add(lowE12);
+		lowEList.add(lowE13);
+		lowEList.add(lowE14);
+		lowEList.add(lowE15);
+		
 		lowE0.setLayoutX(5);
 		lowE0.setLayoutY(205);
 		lowE1.setLayoutX(55);
@@ -871,6 +991,7 @@ public class Fretboard extends Pane {
 //				System.out.println(chordlibrary.findChord(userNotes));
 				
 				possibleChordsList=chordlibrary.findChord(userNotes);
+				Piano.updatePiano(userNotes);
 				updateLabel();
 			}
 
@@ -886,7 +1007,7 @@ public class Fretboard extends Pane {
 				possibleChordsLabel, possibleChordsHeading);
 
 	}
-	public void updateLabel() {
+	public static void updateLabel() {
 		possibleChordsLabel.getChildren().clear();
 		possibleChordsList = (ArrayList<String>) possibleChordsList.stream().distinct().collect(Collectors.toList());
 		for(String chordName:possibleChordsList) {
@@ -1035,6 +1156,10 @@ public class Fretboard extends Pane {
 		midiplayer.stopSound();
 	}
 	
+	public static void randomNotes() {
+		
+	}
+	
 	public static void clearSelection() {
 		highE.selectToggle(null);
 		A.selectToggle(null);
@@ -1095,6 +1220,33 @@ public class Fretboard extends Pane {
 		}
 		return 0;
 	}
-
+	public static void writeChord() {
+		int[] fingering = new int[6];
+		for(int i=0;i<6;i++) {
+			fingering[i] = -1;
+		}
+		for(int i=0;i<15;i++) {
+			if(highEList.get(i).isSelected()) {
+				fingering[5] = i;
+			}
+			if(BList.get(i).isSelected()) {
+				fingering[4] = i;
+			}
+			if(GList.get(i).isSelected()) {
+				fingering[3] = i;
+			}
+			if(DList.get(i).isSelected()) {
+				fingering[2] = i;
+			}
+			if(AList.get(i).isSelected()) {
+				fingering[1] = i;
+			}
+			if(lowEList.get(i).isSelected()) {
+				fingering[0] = i;
+			}
+			
+		}
+		ChordFingeringFileWriter.writeChord(possibleChordsList.get(0), fingering);
+	}
 
 }

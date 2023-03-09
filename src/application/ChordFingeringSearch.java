@@ -44,8 +44,8 @@ public class ChordFingeringSearch extends Pane{
 		}
 		
 		GridPane buttonGrid = new GridPane();
-		Button next = new Button(">");
-		Button prev = new Button("<");
+		Button next = new Button("  >\nNext");
+		Button prev = new Button("     <\nPrevious");
 		searchBar = new TextField();
 		searchButton = new Button("Search");
 		playArpeggioButton = new Button("Arpeggio", new ImageView(soundImg));

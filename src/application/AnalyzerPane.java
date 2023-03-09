@@ -8,10 +8,13 @@ public class AnalyzerPane extends VBox{
 	public AnalyzerPane() {
 		NavigationBar navBar = new NavigationBar();
 		Fretboard fretboard = new Fretboard();
+		Piano piano = new Piano();
 		FretboardButtons fretboardButtons = new FretboardButtons();
-		Button btn3 = new Button("Button 3");
 		HBox fretBoardHbox = new HBox(2);
-		fretBoardHbox.getChildren().addAll(fretboard,fretboardButtons);
-		this.getChildren().addAll(navBar,fretBoardHbox,btn3);
+		VBox buttonPiano = new VBox(2);
+		buttonPiano.setSpacing(163);
+		buttonPiano.getChildren().addAll(fretboardButtons,piano);
+		fretBoardHbox.getChildren().addAll(fretboard,buttonPiano);
+		this.getChildren().addAll(navBar,fretBoardHbox);
 	}
 }
