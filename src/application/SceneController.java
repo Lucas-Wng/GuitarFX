@@ -10,7 +10,7 @@ public class SceneController {
     private static Scene main;
 
     public SceneController(Scene main) {
-        this.main = main;
+        SceneController.main = main;
     }
 
     protected void addScreen(String name, Pane pane){

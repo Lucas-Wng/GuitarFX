@@ -37,7 +37,7 @@ public class ChordFingeringSearch extends Pane{
 		
 	    Image soundImg = null;
 		try {
-			soundImg = new Image(new FileInputStream("data/soundButton.png"));
+			soundImg = new Image(new FileInputStream("resources/images/soundButton.png"));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,6 +47,7 @@ public class ChordFingeringSearch extends Pane{
 		Button next = new Button("  >\nNext");
 		Button prev = new Button("     <\nPrevious");
 		searchBar = new TextField();
+		searchBar.setMaxWidth(150);
 		searchButton = new Button("Search");
 		playArpeggioButton = new Button("Arpeggio", new ImageView(soundImg));
 		playArpeggioButton.setContentDisplay(ContentDisplay.TOP);

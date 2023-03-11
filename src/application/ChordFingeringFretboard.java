@@ -118,9 +118,6 @@ public class ChordFingeringFretboard extends Pane {
 		highE14.setUserData(new Note("F#", 78, 4, 14));
 		highE15.setUserData(new Note("G", 79, 4, 15));
 
-//        System.out.println();
-//        ((Note)highE2.getUserData()).setName(((Note)highE2.getUserData()).switchAccidental());
-//        System.out.println(((Note) (highE2.getUserData())).getName());
 
 		highE0.setLayoutX(5);
 		highE0.setLayoutY(5);
@@ -599,14 +596,7 @@ public class ChordFingeringFretboard extends Pane {
 		lowE[14] = lowE14;
 		lowE[15] = lowE15;
 
-		for(int i=0;i<16;i++) {
-			lowE[i].setDisable(true);
-			A[i].setDisable(true);
-			B[i].setDisable(true);
-			D[i].setDisable(true);
-			G[i].setDisable(true);
-			highE[i].setDisable(true);
-		}
+		disableButtons();
 		
 		this.getChildren().addAll(circle3, circle5, circle7, circle9, circle12A, circle12B, circle15, highE0, highE1,
 				highE2, highE3, highE4, highE5, highE6, highE7, highE8, highE9, highE10, highE11, highE12, highE13,
@@ -615,6 +605,16 @@ public class ChordFingeringFretboard extends Pane {
 				D12, D13, D14, D15, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, lowE0, lowE1,
 				lowE2, lowE3, lowE4, lowE5, lowE6, lowE7, lowE8, lowE9, lowE10, lowE11, lowE12, lowE13, lowE14, lowE15);
 
+	}
+	public static void disableButtons() {
+		for(int i=0;i<16;i++) {
+			lowE[i].setDisable(true);
+			A[i].setDisable(true);
+			B[i].setDisable(true);
+			D[i].setDisable(true);
+			G[i].setDisable(true);
+			highE[i].setDisable(true);
+		}
 	}
 	public static void playChord(int[] frets) {
 		if(currChordNote != null && currChordType != null && possibleFingering.size() != 0) {
@@ -768,6 +768,7 @@ public class ChordFingeringFretboard extends Pane {
 	}
 
 	public static void updateNotes() {
+		disableButtons();
 		currentPos = 0;
 		clearFretboard();
 		possibleFingering.clear();

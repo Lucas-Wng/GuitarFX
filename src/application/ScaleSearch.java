@@ -46,22 +46,24 @@ public class ScaleSearch extends Pane {
 		VBox searchVBox = new VBox(3);
 		Image soundImg = null;
 		try {
-			soundImg = new Image(new FileInputStream("data/soundButton.png"));
+			soundImg = new Image(new FileInputStream("resources/images/soundButton.png"));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		scaleLibrary = new ScaleLibrary();
-		// System.out.println(Arrays.deepToString(scaleNames.toArray()));
 		scaleNames = new ArrayList<String>(ScaleLibrary.getScaleMap().keySet());
 		ObservableList<String> scaleObservableList = FXCollections.observableArrayList(scaleNames);
 		listView = new ListView<String>(scaleObservableList);
 		listView.setMaxSize(210, 300);
 		searchBar = new TextField();
+		searchBar.setPrefWidth(150);
 		searchButton = new Button("Search");
 		playScaleButton = new Button("Play",new ImageView(soundImg));
 		playScaleButton.setContentDisplay(ContentDisplay.TOP);
 		clearButton = new Button("Clear");
+		clearButton.setPrefSize(100, 80);
+		playScaleButton.setPrefSize(100, 80);
 		searchButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -74,7 +76,6 @@ public class ScaleSearch extends Pane {
 		listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				// System.out.println(newValue);
 				if (newValue != null) {
 					ScaleFretboard.setCurrentScale(newValue);
 					ScaleFretboard.updateNotes();
@@ -88,7 +89,6 @@ public class ScaleSearch extends Pane {
 			@Override
 			public void handle(ActionEvent event) {
 				if (ScaleFretboard.getCurrentScale() != null) {
-					// System.out.println(scaleLibrary.getScaleMap().keySet());
 					int[] intervals = ScaleLibrary.getScaleMap().get(ScaleFretboard.getCurrentScale());
 					playIntervalsSound(intervals);
 
@@ -111,6 +111,7 @@ public class ScaleSearch extends Pane {
 
 		searchHBox.getChildren().addAll(searchBar, searchButton);
 		HBox buttonHBox = new HBox(2);
+		buttonHBox.setSpacing(10);
 		buttonHBox.getChildren().addAll(playScaleButton,clearButton);
 		searchVBox.getChildren().addAll(searchHBox, listView, buttonHBox);
 		this.getChildren().addAll(searchVBox);

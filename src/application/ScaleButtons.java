@@ -2,7 +2,6 @@ package application;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
@@ -128,7 +127,6 @@ public class ScaleButtons extends Pane{
 
 		         if (scaleGroup.getSelectedToggle() != null) {
 		        	 String selectedScaleButton = ((RadioButton)scaleGroup.getSelectedToggle()).getText();
-		             //System.out.println(selectedScaleButton);
 		             ScaleFretboard.setCurrentScale(selectedScaleButton);
 		             ScaleFretboard.updateNotes();
 

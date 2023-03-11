@@ -46,13 +46,10 @@
 #possibleChordsCss{
 	-fx-font-size: 40px;
     -fx-font-weight: bold;
-    -fx-text-fill: green;
-    -fx-border-color: red;
+    -fx-text-fill: white;
     -fx-border-radius: 5px;
-    -fx-border: 5px;
-    -fx-background-color: white;
+    -fx-background-color: green;
     -fx-padding: 10px;
-    -fx-margins: 10px;
 }
 
 .toggle-button{

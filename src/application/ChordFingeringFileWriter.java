@@ -1,14 +1,11 @@
 package application;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-
 public class ChordFingeringFileWriter {
 	static BufferedWriter out;
-	static String outputFile = "chordFingering.txt";
+	static String outputFile = "resources/data/chordFingering.txt";
 	public static void writeChord(String name, int[] frets) {
 		try {
 			out = new BufferedWriter(new FileWriter(outputFile,true));

@@ -1,17 +1,9 @@
 package application;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -117,9 +109,6 @@ public class ScaleFretboard extends Pane{
 		highE14.setUserData(new Note("F#", 78, 4));
 		highE15.setUserData(new Note("G", 79, 4));
 
-//        System.out.println();
-//        ((Note)highE2.getUserData()).setName(((Note)highE2.getUserData()).switchAccidental());
-//        System.out.println(((Note) (highE2.getUserData())).getName());
 
 		highE0.setLayoutX(5);
 		highE0.setLayoutY(5);
@@ -601,9 +590,7 @@ public class ScaleFretboard extends Pane{
 		buttonList.add(lowE13);
 		buttonList.add(lowE14);
 		buttonList.add(lowE15);
-		for(RadioButton noteButton:buttonList) {
-			noteButton.setDisable(true);
-		}
+		disableNotes();
 		
 		this.getChildren().addAll(circle3, circle5, circle7, circle9, circle12A, circle12B, circle15, highE0, highE1,
 				highE2, highE3, highE4, highE5, highE6, highE7, highE8, highE9, highE10, highE11, highE12, highE13,
@@ -614,12 +601,16 @@ public class ScaleFretboard extends Pane{
 				);
 
 	}
-
+	public static void disableNotes() {
+		for(RadioButton noteButton:buttonList) {
+			noteButton.setDisable(true);
+		}
+	}
 	public static void updateNotes() { 
 		for(int i=0;i<buttonList.size();i++) {
 			buttonList.get(i).setSelected(false);
 		}
-		
+		disableNotes();
 		if(currentScale!=null&&currentNote!=null) {
 			ScaleButtons.setCurrentNoteScaleText(currentNote+currentScale);
 			int[] intervals = scaleMap.get(currentScale);

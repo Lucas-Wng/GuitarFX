@@ -6,9 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class ChordLibrary {
 	static ArrayList<Chord> list = new ArrayList<Chord>();
@@ -26,8 +24,6 @@ public class ChordLibrary {
 			for(int j=0;j<arrNoteObj.length;j++) {
 				stringNote[j] = arrNoteObj[j].getName();
 			}
-//			Arrays.sort(stringNote);
-//			Arrays.sort(cleanedArray);
 			insertionSort(cleanedArray);
 			insertionSort(stringNote);
 			if(Arrays.equals(stringNote, cleanedArray)) {
@@ -52,7 +48,7 @@ public class ChordLibrary {
 		String line = "";
 		String[] noteSequence = {"A","A#","B","C","C#","D","D#","E","F","F#","G","G#"};
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data/chord-fingers.csv"));
+			BufferedReader br = new BufferedReader(new FileReader("resources/data/chord-fingers.csv"));
 			while((line = br.readLine())!=null) {
 				
 				String note = line.substring(0,line.indexOf(';'));
@@ -104,13 +100,13 @@ public class ChordLibrary {
 						}
 					}
 					notes[i] = chordNote;
-					//System.out.println(Arrays.toString(notes));
+					
 					for(int j=0;j<notes.length;j++) {
 						notesObj[i] = new Note(notes[i],0,0);
 					}
 				}
 				Chord newChord = new Chord(note,type,notes.length,notesObj,chordStructure,fingerPosArr);
-				//System.out.println(Arrays.toString(newChord.getNotes()));
+
 				list.add(newChord);
 				
 			}
