@@ -15,3 +15,5 @@ Guitar Explorer is a Java desktop application designed to assist guitarists in d
 - JavaFX: The application leverages the JavaFX library for creating a robust and responsive user interface.
 
 - CSS: Cascading Style Sheets are employed to enhance the visual appeal of the application.
+
+https://github.com/Lucas-Wng/GuitarFX/blob/56bc8cf7653900c45e82703b0ed9fb3fd0a89a77/images/image1.png
