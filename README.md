@@ -16,4 +16,11 @@ Guitar Explorer is a Java desktop application designed to assist guitarists in d
 
 - CSS: Cascading Style Sheets are employed to enhance the visual appeal of the application.
 
+## Images
+
+### Chord Library
+![Image](./images/image2.png)
+### Chord Analyzer
+![Image](./images/image3.png)
+### Scale Library
 ![Image](./images/image1.png)
